@@ -3,6 +3,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../../core/services/auth/auth.service';
+import { Users } from '../../core/models/users';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-register',
   imports: [ReactiveFormsModule,MatButtonModule,MatFormFieldModule,MatInputModule],
@@ -11,7 +14,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 })
 export class RegisterComponent implements OnInit {
 public registerForm!:FormGroup
-constructor(private fb:FormBuilder){}
+public name:string='';
+public email:string='';
+public password:string='';
+public phoneNumber:string='';
+public address:string='';
+constructor(private fb:FormBuilder,private authService:AuthService,private router:Router){}
 
 ngOnInit() {
   this.registerForm=this.fb.group({
@@ -25,8 +33,13 @@ ngOnInit() {
 
 public register(){
   if(this.registerForm.valid){
-    localStorage.setItem('registerForm',JSON.stringify(this.registerForm.value))
-    console.log(this.registerForm.value)
+   const user:Users=this.registerForm.value;
+   if(this.authService.register(user)){
+    alert('User registered succesfully')
+    this.router.navigate(['/login'])
+   }else{
+    alert('Email already exists')
+   }
   }
 }
 }

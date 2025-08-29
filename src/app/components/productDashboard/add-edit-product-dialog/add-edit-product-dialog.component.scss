@@ -1,0 +1,23 @@
+
+.form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:61px;
+    background-color: rgb(174, 195, 233);
+}
+
+.container {
+    width: 80%;
+    max-width: 400px;
+}
+
+mat-form-field {
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+button {
+    margin-top: 10px;
+    margin-right: 10px;
+}

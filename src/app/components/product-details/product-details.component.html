@@ -1,0 +1,15 @@
+<div class="product-grid">
+    @for (product of productsData;track product.productId){
+    <mat-card class="product-card" appearance="outlined">
+        <img mat-card-image [src]="product.productImgUrl">
+        <mat-card-content>
+            <p>
+                {{product.productName}}
+            </p>
+        </mat-card-content>
+        <mat-card-actions>
+            <button matButton>View Details</button>
+        </mat-card-actions>
+    </mat-card>
+    }
+</div>

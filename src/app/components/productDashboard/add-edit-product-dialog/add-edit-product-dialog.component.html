@@ -1,0 +1,33 @@
+<div class="form">
+    <div class="container">
+        <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+            <mat-form-field>
+                <mat-label>Product Name</mat-label>
+                <input matInput formControlName="productName">
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+                <mat-label>Product Category</mat-label>
+                <input matInput formControlName="productCategory">
+            </mat-form-field>
+            <br>
+             <mat-form-field>
+                <mat-label>Product Img URL</mat-label>
+                <input matInput formControlName="productImgUrl">
+            </mat-form-field>
+               <mat-form-field>
+                <mat-label>Product Cost</mat-label>
+                <input matInput type="number" formControlName="productCost">
+            </mat-form-field>
+            <br>
+            <button style="margin-bottom: 10px;" mat-raised-button color="primary" (click)="cancel()">
+                Cancel
+            </button>
+
+            <button style="margin-bottom: 10px;" mat-raised-button color="primary"
+                [disabled]="this.productForm.invalid && (productName.trim()==='' || productCategory.trim()==='' || productImgUrl.trim()==='')"
+                type="submit">{{isEditMode?'Edit Product':'Add Product'}}
+            </button>
+        </form>
+    </div>
+</div>
