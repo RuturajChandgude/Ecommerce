@@ -1,0 +1,41 @@
+<div class="cart-container">
+  <h2 class="title">Your Cart</h2>
+
+  <div *ngIf="cart.length === 0" class="empty-cart">
+    <mat-icon>remove_shopping_cart</mat-icon>
+    <p>No items in your cart.</p>
+    <button mat-raised-button color="primary" routerLink="/productDetails">Shop Now</button>
+  </div>
+
+  @if (cart.length > 0){
+  <div class="cart-grid">
+    @for (item of cart;track item.productId){
+    <mat-card class="cart-item">
+      <mat-card-header>
+        <mat-card-title>{{ item.productName }}</mat-card-title>
+      </mat-card-header>
+      <img mat-card-image [src]="item.productImgUrl"/>
+      <mat-card-content>
+        <p><strong>Price:</strong> Rs{{ item.productCost }}</p>
+        <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+        <p><strong>Total:</strong> Rs{{ item.total }}</p>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-button color="warn" (click)="removeItem(item.productId)">
+          Cancel
+        </button>
+      </mat-card-actions>
+    </mat-card>
+    }
+  </div>
+}
+  @if(cart.length>0){
+    <div class="cart-summary">
+    <h3>Grand Total: Rs{{totalAmount()}}</h3>
+    <button mat-raised-button color="primary" (click)="buyNow()">Buy Now</button>
+    <button mat-button color="warn" (click)="clearCart()">Clear Cart</button>
+  </div>
+  }
+  
+</div>

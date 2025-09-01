@@ -1,17 +1,35 @@
 <mat-toolbar class="nav">
- 
-  <span>E-commerce Application</span>
-  <span class="example-spacer"></span>
-  <button routerLink="productDetails" matIconButton>
-    Product Details
-  </button>
-  <button routerLink="productDashBoard" matIconButton  >
-    Product Dashboard
-  </button>
-  <button routerLink="login" matIconButton class="login" >
-    Login
-  </button>
-  <button routerLink="register" matIconButton class="register" >
-    Register
-  </button>
+
+  <span class="title">E-commerce Application</span>
+  <div class="nav-links">
+    <button mat-button routerLink="productDetails" >
+      Product Details
+    </button>
+    <button mat-button routerLink="productDashBoard" >
+      Product Dashboard
+    </button>
+  </div>
+
+  <div class="right-side">
+    @if(!isLoggedIn()){
+    <button mat-button routerLink="/login"  class="login">
+      Login
+    </button>
+    <button mat-button routerLink="/register"  class="register">
+      Register
+    </button>
+    }
+
+    @if(isLoggedIn()){
+    <button mat-button routerLink="/cart" class="class-btn">
+      <mat-icon>shopping_cart</mat-icon>
+      <span class="cart-count">{{ cartService.getCartTotalCount() }}</span>
+    </button>
+    <button mat-button (click)="logout()" class="logout">
+      Logout
+    </button>
+    }
+
+  </div>
+
 </mat-toolbar>

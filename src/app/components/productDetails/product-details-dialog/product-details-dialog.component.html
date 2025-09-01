@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>{{ data.productName }}</h2>
+
+<mat-dialog-content>
+  <img [src]="data.productImgUrl" >
+  <p><strong>Category:</strong> {{ data.productCategory }}</p>
+  <p><strong>Price:</strong> ₹{{ data.productCost }}</p>
+  <p><strong>Available:</strong> {{ data.productQuantity }}</p>
+  <p><strong>Weight:</strong> {{ data.weight }} kg</p>
+  <p><strong>Color:</strong> {{ data.color }}</p>
+  <p><strong>Dimensions: </strong>{{data.width}} cm X {{ data.height }} cm</p>
+
+  <div class="addDecrease" >
+    <button mat-icon-button aria-label="Add" (click)="decrease()"><mat-icon>remove</mat-icon></button>
+    <span>{{ qty }}</span>
+    <button mat-icon-button aria-label="Subtract"  (click)="increase()"><mat-icon>add</mat-icon></button>
+  </div>
+
+  <p class="totalAmount">Total: ₹{{ total() }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button (click)="addToCart()">Add to Cart</button>
+  <button mat-button (click)="cancel()">Cancel</button>
+</mat-dialog-actions>

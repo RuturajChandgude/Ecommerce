@@ -8,10 +8,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ProductsService } from '../../../core/services/products/products.service';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { GetProduct } from '../../../core/models/get-product';
+import { GetProduct } from '../../../core/models/products/get-product';
 import { AddEditProductDialogComponent } from '../add-edit-product-dialog/add-edit-product-dialog.component';
 import { MatIconModule } from '@angular/material/icon';
-import { UpdateProduct } from '../../../core/models/update-product';
+import { UpdateProduct } from '../../../core/models/products/update-product';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 @Component({
   selector: 'app-products-data',
@@ -20,7 +20,7 @@ import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
   styleUrl: './products-data.component.scss'
 })
 export class ProductsDataComponent implements OnInit, AfterViewInit {
-  public displayedColumns: string[] = ['productId', 'productName', 'productCategory', 'productCost', 'edit', 'delete'];
+  public displayedColumns: string[] = ['productId', 'productName', 'productCategory', 'productCost','productQuantity','weight','color','width','height', 'edit', 'delete'];
   public dataSource = new MatTableDataSource<GetProduct>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -28,10 +28,12 @@ export class ProductsDataComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.loadProducts();
   }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
+  
   public loadProducts() {
     const productData = this.productService.getProducts();
     if (productData) {

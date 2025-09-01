@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Products } from '../../models/products';
-import { GetProduct } from '../../models/get-product';
-import { CreateProduct } from '../../models/create-product';
+import { GetProduct } from '../../models/products/get-product';
+import { CreateProduct } from '../../models/products/create-product';
+import { UpdateProduct } from '../../models/products/update-product';
+import { CartProducts } from '../../models/cart/cart-products';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class ProductsService {
     localStorage.setItem(this.productKey,JSON.stringify(products))
   }
 
-  public updateProduct(updateProduct:Products){
+  public updateProduct(updateProduct:UpdateProduct){
     const products=this.getProducts();
     const index=products.findIndex((product)=>product.productId===updateProduct.productId);
     if(index!==-1){
@@ -32,5 +33,22 @@ export class ProductsService {
   public deleteProduct(deleteProductID:number){
     const products=this.getProducts().filter((product)=>product.productId!==deleteProductID)
     localStorage.setItem(this.productKey,JSON.stringify(products))
+  }
+
+  public updateStockAfterPurchase(cartItems:CartProducts[]) {
+    const products = this.getProducts();
+
+    cartItems.forEach((cartItem) => {
+      const index = products.findIndex(
+        (p) => p.productId === cartItem.productId
+      );
+      if (index !== -1) {
+        products[index].productQuantity -= cartItem.quantity;
+        if (products[index].productQuantity < 0) {
+          products[index].productQuantity = 0;
+        }
+      }
+    });
+    localStorage.setItem(this.productKey, JSON.stringify(products));
   }
 }

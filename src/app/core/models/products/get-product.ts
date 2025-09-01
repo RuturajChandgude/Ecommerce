@@ -3,5 +3,10 @@ export interface GetProduct {
     productName: string,
     productCategory: string,
     productImgUrl: string,
-    productCost: number
+    productCost: number,
+    productQuantity:number,
+    weight:number,
+    color:string,
+    width:number,
+    height:number
 }
