@@ -20,27 +20,29 @@ export class AddEditProductDialogComponent implements OnInit {
   public isEditMode = false;
   public productName: string = '';
   public productCategory: string = '';
-  public productImgUrl: string = '';
+  public productImgUrl: [] = [];
   public productCost: number = 0;
-  public productQuantity:number=0;
-  public weight:number=0;
-  public color:string='';
-  public width:number=0;
-  public height:number=0;
-  public previewUrl: string | undefined = '';
+  public productQuantity: number = 0;
+  public weight: number = 0;
+  public color: string = '';
+  public width: number = 0;
+  public height: number = 0;
+  //public previewUrl: string | undefined = '';
+  public previewUrl: string[] = [];
 
   constructor(private fb: FormBuilder, private productService: ProductsService, private dialogRef: MatDialogRef<AddEditProductDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: UpdateProduct) { }
 
   ngOnInit() {
     if (this.data) {
-      this.isEditMode = true
+      this.isEditMode = true;
+      this.previewUrl = this.data.productImgUrl || [];
     }
     this.productForm = this.fb.group({
       productName: [this.data ? this.data.productName : '', [Validators.required, this.noBlankspaceValidator]],
       productCategory: [this.data ? this.data.productCategory : '', [Validators.required, this.noBlankspaceValidator]],
-      productImgUrl: [this.data ? this.data.productImgUrl : null, [Validators.required, this.noBlankspaceValidator]],
+      productImgUrl: [this.data ? this.data.productImgUrl : [], [Validators.required]],
       productCost: [this.data ? this.data.productCost : 0, Validators.required],
-      productQuantity:[this.data?this.data.productQuantity:0,Validators.required],
+      productQuantity: [this.data ? this.data.productQuantity : 0, Validators.required],
       weight: [this.data ? this.data.weight : '', Validators.required],
       color: [this.data ? this.data.color : '', [Validators.required, this.noBlankspaceValidator]],
       width: [this.data ? this.data.width : '', Validators.required],
@@ -60,17 +62,23 @@ export class AddEditProductDialogComponent implements OnInit {
     if (!input.files || input.files?.length === 0) {
       return;
     }
-    const file = input.files[0]
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.previewUrl = reader.result?.toString()
-        this.productForm.patchValue({ productImgUrl: this.previewUrl })
+    this.previewUrl=[];
+    for (let i = 0; i < input.files.length; i++) {
+      const file = input.files[i]
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          const result=e.target.result as string
+          this.previewUrl.push(result);
+          console.log(this.previewUrl);
+          this.productForm.patchValue({productImgUrl:[...this.previewUrl]})
+        }
+        reader.readAsDataURL(file);
       }
-      reader.readAsDataURL(file);
     }
-
+    input.value=''
   }
+
   public onSubmit() {
     if (this.productForm.valid) {
       if (this.isEditMode) {

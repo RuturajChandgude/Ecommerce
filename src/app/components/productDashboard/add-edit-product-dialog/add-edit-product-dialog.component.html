@@ -13,7 +13,7 @@
             <br>
 
             <mat-label>Upload Image</mat-label>
-            <input type="file" id="file" (change)="onFileSelected($event)" formControlName="productImgUrl">
+            <input type="file" (change)="onFileSelected($event)" multiple formControlName="productImgUrl">
 
             <br> <br>
             <mat-form-field>
@@ -52,7 +52,7 @@
             </button>
 
             <button style="margin-bottom: 10px;" mat-raised-button color="primary"
-                [disabled]="this.productForm.invalid && (productName.trim()==='' || productCategory.trim()==='' || productImgUrl.trim()==='')"
+                [disabled]="this.productForm.invalid"
                 type="submit">{{isEditMode?'Edit Product':'Add Product'}}
             </button>
         </form>

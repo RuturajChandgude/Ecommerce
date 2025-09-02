@@ -14,17 +14,19 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class CartComponent implements OnInit {
   cart: CartProducts[] = [];
+  public currentUser= JSON.parse(localStorage.getItem('currentUser') || '[]')
   constructor(private cartService: CartService, private productService: ProductsService) { }
   ngOnInit() {
     this.loadCart();
   }
 
   public loadCart() {
-    this.cart = this.cartService.getCartProducts();
+    const user=JSON.parse(localStorage.getItem('currentUser') || '[]');
+    this.cart = this.cartService.getCartProductByUser(user.userId);
   }
 
-  public removeItem(id: number) {
-    this.cartService.removeFromCart(id);
+  public removeItem(productid: number) {
+    this.cartService.removeFromCart(productid);
     this.loadCart();
   }
 

@@ -14,7 +14,10 @@
       <mat-card-header>
         <mat-card-title>{{ item.productName }}</mat-card-title>
       </mat-card-header>
-      <img mat-card-image [src]="item.productImgUrl"/>
+      @if(cart.length>1){
+
+        <img mat-card-image [src]="item.productImgUrl[0]"/>
+      }
       <mat-card-content>
         <p><strong>Price:</strong> Rs{{ item.productCost }}</p>
         <p><strong>Quantity:</strong> {{ item.quantity }}</p>

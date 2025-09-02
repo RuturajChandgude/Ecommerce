@@ -31,20 +31,8 @@ export class LoginComponent implements OnInit {
 
   public login() {
     if (this.loginForm.valid) {
-      // const storedFormData=localStorage.getItem('registerForm');
-      // if(storedFormData){
-      //  try {
-      //   const formData=JSON.parse(storedFormData)
-      //   if(this.loginForm.get('email')?.value===formData.email && this.loginForm.get('password')?.value===formData.password ){
-      //     console.log("Login successful")
-      //   }
-      //  } catch (error) {
-
-      //  }
-      // }
       const { email, password } = this.loginForm.value
       const user = this.authService.login(email, password);
-
       if (user) {
         alert('Login succesful');
         this.router.navigate(['/productDashBoard'])

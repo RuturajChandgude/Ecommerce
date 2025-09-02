@@ -1,7 +1,13 @@
 <div class="product-grid">
     @for (product of productsData;track product.productId){
-    <mat-card class="product-card" appearance="outlined">
-        <img mat-card-image [src]="product.productImgUrl">
+    <mat-card class="product-card" appearance="outlined"> 
+        @if(productsData.length>1)
+        {
+        <img mat-card-image [src]="product.productImgUrl[0]">
+        }
+        
+         <!-- <img mat-card-image [src]="product.productImgUrl[0]"> -->
+        
         <mat-card-content>
             <p>
                 {{product.productName}}

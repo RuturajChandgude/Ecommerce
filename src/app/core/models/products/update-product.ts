@@ -2,7 +2,7 @@ export interface UpdateProduct {
     productId: number,
     productName: string,
     productCategory: string,
-    productImgUrl: string,
+    productImgUrl: string[],
     productCost: number,
     productQuantity:number,
     weight:number,

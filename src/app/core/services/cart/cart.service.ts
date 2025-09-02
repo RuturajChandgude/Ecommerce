@@ -8,21 +8,27 @@ import { GetProduct } from '../../models/products/get-product';
 export class CartService {
   constructor() { }
   private cartKey='cart';
-  
+  public currentUser= JSON.parse(localStorage.getItem('currentUser') || '[]')
   public getCartProducts():CartProducts[]{
     return JSON.parse(localStorage.getItem(this.cartKey) || '[]')
   }
 
-  public saveCartProducts(cart:CartProducts[]){
-    localStorage.setItem(this.cartKey,JSON.stringify(cart));
+  public getCartProductByUser(userId:number):CartProducts[]{
+  const cartData=localStorage.getItem(`${this.cartKey}_${userId}`);
+  return cartData?JSON.parse(cartData):[]
   }
 
-  public addToCart(product:GetProduct,qty:number){
+  public saveCartProducts(cart:CartProducts[],userId:string){
+    localStorage.setItem(`${this.cartKey}_${userId}`,JSON.stringify(cart))
+
+  }
+
+  public addToCart(userId:string,product:GetProduct,qty:number){
     if(product.productQuantity<=0){
       alert('This product is out of stock');
       return;
     }
-    const cart=this.getCartProducts();
+    const cart=this.getCartProductByUser(Number(userId));
     const index=cart.findIndex((item)=>item.productId===product.productId);
 
     if(index!==-1){
@@ -39,10 +45,9 @@ export class CartService {
         alert('Not enough stock available');
         return;
       }
-      // const storedData=(localStorage.getItem('currentUser'));
-      // const userData=JSON.parse(this.storedData);
+   
       cart.push({
-        
+        userId:userId,
         productId:product.productId,
         productName:product.productName,
         productImgUrl:product.productImgUrl,
@@ -51,23 +56,24 @@ export class CartService {
         total:qty*product.productCost
       })
     }
-    this.saveCartProducts(cart);
+    this.saveCartProducts(cart,userId);
   }
 
   public removeFromCart(productId:number){
-    const cart=this.getCartProducts().filter((item)=>item.productId!==productId);
-    this.saveCartProducts(cart);
+    const cart=this.getCartProductByUser(this.currentUser.userId).filter((item)=>item.productId!==productId);
+    this.saveCartProducts(cart,this.currentUser.userId);
   }
 
   public clearCart(){
-    localStorage.removeItem(this.cartKey);
+    localStorage.removeItem(`${this.cartKey}_${this.currentUser.userId}`);
   }
 
   public getTotalAmountCart(){
-    return this.getCartProducts().reduce((sum,item)=>sum=sum+item.total,0);
+    return this.getCartProductByUser(this.currentUser.userId).reduce((sum,item)=>sum=sum+item.total,0);
   }
 
   public getCartTotalCount(){
-    return this.getCartProducts().reduce((sum,item)=>sum+item.quantity,0);
+    //return this.getCartProductByUser(this.currentUser.userId).reduce((sum,item)=>sum+item.quantity,0);
+    return this.getCartProductByUser(this.currentUser.userId).length
   }
 }
