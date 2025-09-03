@@ -1,0 +1,17 @@
+.order-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 15px;
+    h2{
+        margin-left: 550px;
+        margin-bottom: 20px;
+    }
+}
+.order-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    mat-card{
+        margin-left: 30px;
+    }
+}

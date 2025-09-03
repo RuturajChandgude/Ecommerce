@@ -1,9 +1,12 @@
 <h2 mat-dialog-title>{{ data.productName }}</h2>
 
-<mat-dialog-content>
-  @for(img of data.productImgUrl;track data.productId){
-  <img [src]="img" >
+<mat-dialog-content style="margin-left: 30px;">
+  <div class="scroll-wrapper">
+  @for(img of data.productImgUrl;track data.productImgUrl){
+  <img  class="images" [src]="img">
   }
+  </div>
+  <div style="margin-left: 30px;">
   <p><strong>Category:</strong> {{ data.productCategory }}</p>
   <p><strong>Price:</strong> ₹{{ data.productCost }}</p>
   <p><strong>Available:</strong> {{ data.productQuantity }}</p>
@@ -14,10 +17,20 @@
   <div class="addDecrease">
     <button mat-icon-button aria-label="Add" (click)="decrease()"><mat-icon>remove</mat-icon></button>
     <span>{{ qty }}</span>
-    <button mat-icon-button aria-label="Subtract"  (click)="increase()"><mat-icon>add</mat-icon></button>
+    <button mat-icon-button aria-label="Subtract" (click)="increase()"><mat-icon>add</mat-icon></button>
   </div>
 
-  <p class="totalAmount">Total: ₹{{ total() }}</p>
+  <p class="totalAmount">Total: ₹{{ total() }}</p><br><br>
+  </div>
+  <h2>Customer Reviews: </h2>
+  <mat-dialog-content style="background-color: antiquewhite;">
+    @for(review of reviewData;track review.reviewId)
+    {
+    <h4>User: {{review.userName}}</h4>
+    <p>Review: {{review.reviewText}}</p>
+    <p>Rating : {{review.rating}}</p>
+    }
+  </mat-dialog-content>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">

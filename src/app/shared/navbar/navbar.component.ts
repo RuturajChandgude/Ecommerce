@@ -28,6 +28,7 @@ export class NavbarComponent {
     if (confirmLogout) {
       localStorage.removeItem('currentUser');
       alert('Logout Successful!')
+      window.location.reload();
       this.router.navigate(['/login'])
     }
   }

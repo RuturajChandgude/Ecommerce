@@ -6,12 +6,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ProductsService } from '../../../core/services/products/products.service';
-import { GetProduct } from '../../../core/models/products/get-product';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { UpdateProduct } from '../../../core/models/products/update-product';
+import {MatSelectModule} from '@angular/material/select';
 @Component({
   selector: 'app-add-edit-product-dialog',
-  imports: [MatDialogModule, MatButtonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+  imports: [MatSelectModule,MatDialogModule, MatButtonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
   templateUrl: './add-edit-product-dialog.component.html',
   styleUrl: './add-edit-product-dialog.component.scss'
 })
@@ -27,7 +27,6 @@ export class AddEditProductDialogComponent implements OnInit {
   public color: string = '';
   public width: number = 0;
   public height: number = 0;
-  //public previewUrl: string | undefined = '';
   public previewUrl: string[] = [];
 
   constructor(private fb: FormBuilder, private productService: ProductsService, private dialogRef: MatDialogRef<AddEditProductDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: UpdateProduct) { }
@@ -76,7 +75,7 @@ export class AddEditProductDialogComponent implements OnInit {
         reader.readAsDataURL(file);
       }
     }
-    input.value=''
+    //input.value=''
   }
 
   public onSubmit() {

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { CartProducts } from '../../models/cart/cart-products';
 import { GetProduct } from '../../models/products/get-product';
-
+import { ProductsService } from '../products/products.service';
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  constructor() { }
+  constructor(private productService:ProductsService) { }
   private cartKey='cart';
+  public productData:GetProduct[]=[]
   public currentUser= JSON.parse(localStorage.getItem('currentUser') || '[]')
   public getCartProducts():CartProducts[]{
     return JSON.parse(localStorage.getItem(this.cartKey) || '[]')
@@ -20,7 +21,6 @@ export class CartService {
 
   public saveCartProducts(cart:CartProducts[],userId:string){
     localStorage.setItem(`${this.cartKey}_${userId}`,JSON.stringify(cart))
-
   }
 
   public addToCart(userId:string,product:GetProduct,qty:number){
@@ -59,6 +59,38 @@ export class CartService {
     this.saveCartProducts(cart,userId);
   }
 
+  public updateQuantity(userId:string,productId:number,newQty:number)
+  {
+    const cart=this.getCartProductByUser(Number(userId));
+    const index=cart.findIndex(item=>item.productId===productId);
+
+    const productArray:GetProduct[]=this.productService.getProducts();
+    const currProduct:GetProduct | undefined=productArray.find(item=>item.productId===productId)
+    
+    if(!currProduct)
+    {
+      alert('Product not found in inventory');
+      return;
+    }
+    //const currProduct=this.productService.getProducts.find((item)=>item.productId==productId)
+    if(index!==-1)
+    {
+      if(newQty<1)
+      {
+        this.removeFromCart(productId)
+      }else{
+        if(newQty>currProduct.productQuantity)
+        {
+          alert('Not enough stock available');
+          return;
+        }
+        cart[index].quantity=newQty;
+        cart[index].total=newQty*cart[index].productCost;
+      }
+      this.saveCartProducts(cart,userId);
+    }
+  }
+  
   public removeFromCart(productId:number){
     const cart=this.getCartProductByUser(this.currentUser.userId).filter((item)=>item.productId!==productId);
     this.saveCartProducts(cart,this.currentUser.userId);

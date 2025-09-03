@@ -1,0 +1,33 @@
+<div class="order-container">
+    <h2>My orders</h2>
+    @if(orders.length===0)
+    {
+    <p>No orders found.</p>
+    }
+
+    <div class="order-grid">
+        @for(order of orders;track order.orderId)
+        {
+        @for(item of order.order;track item){
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>Order Id: {{order.orderId}}</mat-card-title>
+                <mat-card-subtitle>Order Date :{{order.orderDate | date}}</mat-card-subtitle>
+            </mat-card-header>
+
+            <mat-card-content>
+
+                <img mat-card-image height="200px" [src]="item.productImgUrl[0]" />
+                <p><strong>Product Name: </strong>{{item.productName}}</p>
+                <p><strong>Totol Quantity: </strong>{{item.quantity}}</p>
+                <p><strong>Product Cost: </strong>{{item.productCost}}</p>
+                <p><strong>Total Amount: </strong>{{item.total}}</p>
+
+                <button (click)="addReview(item.productId)" matButton="filled">Add reviews</button>
+            </mat-card-content>
+        </mat-card>
+        }
+        }
+        
+    </div>
+</div>

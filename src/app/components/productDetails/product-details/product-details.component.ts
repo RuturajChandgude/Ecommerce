@@ -6,6 +6,8 @@ import { ProductsService } from '../../../core/services/products/products.servic
 import { MatDialog } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ProductDetailsDialogComponent } from '../product-details-dialog/product-details-dialog.component';
+import { ReviewsService } from '../../../core/services/reviews/reviews.service';
+import { Reviews } from '../../../core/models/reviews/reviews';
 @Component({
   selector: 'app-product-details',
   imports: [MatButtonModule, MatCardModule, MatDialogModule],
@@ -14,14 +16,15 @@ import { ProductDetailsDialogComponent } from '../product-details-dialog/product
 })
 export class ProductDetailsComponent implements OnInit {
   public productsData!: GetProduct[];
-
-  constructor(private productService: ProductsService, private dialog: MatDialog) { }
+  public reviewData!:Reviews[]
+  constructor(private productService: ProductsService,private reviewService:ReviewsService,private dialog: MatDialog) { }
 
   ngOnInit() {
     const storedData = localStorage.getItem('products');
     if (storedData) {
       this.productsData = JSON.parse(storedData)
     }
+    
   }
 
   public openProductDetailsDialog(product: GetProduct) {

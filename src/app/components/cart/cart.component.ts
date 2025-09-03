@@ -6,6 +6,7 @@ import { CartService } from '../../core/services/cart/cart.service';
 import { ProductsService } from '../../core/services/products/products.service';
 import { CartProducts } from '../../core/models/cart/cart-products';
 import { MatIconModule } from '@angular/material/icon';
+import { OrdersService } from '../../core/services/orders/orders.service';
 @Component({
   selector: 'app-cart',
   imports: [CommonModule, MatCardModule, MatIconModule, MatButtonModule],
@@ -15,7 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class CartComponent implements OnInit {
   cart: CartProducts[] = [];
   public currentUser= JSON.parse(localStorage.getItem('currentUser') || '[]')
-  constructor(private cartService: CartService, private productService: ProductsService) { }
+  constructor(private cartService: CartService, private productService: ProductsService,private orderService:OrdersService) { }
   ngOnInit() {
     this.loadCart();
   }
@@ -30,6 +31,17 @@ export class CartComponent implements OnInit {
     this.loadCart();
   }
 
+  public decreaseQty(item:CartProducts)
+  {
+    this.cartService.updateQuantity(this.currentUser.userId,item.productId,item.quantity-1);
+    this.loadCart()
+  }
+
+  public increaseQty(item:CartProducts){
+    this.cartService.updateQuantity(this.currentUser.userId,item.productId,item.quantity+1);
+    this.loadCart()
+  }
+
   public clearCart() {
     this.cartService.clearCart();
     this.loadCart();
@@ -40,6 +52,7 @@ export class CartComponent implements OnInit {
   }
 
   public buyNow() {
+    this.orderService.buyNow(this.currentUser.userId)
     this.productService.updateStockAfterPurchase(this.cart);
     alert('Order placed!');
     this.clearCart();

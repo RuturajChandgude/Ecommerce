@@ -14,7 +14,7 @@
       <mat-card-header>
         <mat-card-title>{{ item.productName }}</mat-card-title>
       </mat-card-header>
-      @if(cart.length>1){
+      @if(cart.length>0){
 
         <img mat-card-image [src]="item.productImgUrl[0]"/>
       }
@@ -23,6 +23,15 @@
         <p><strong>Quantity:</strong> {{ item.quantity }}</p>
         <p><strong>Total:</strong> Rs{{ item.total }}</p>
       </mat-card-content>
+      
+      <p class="edittext"><strong>Edit Quantity:</strong></p>
+
+      <div class="editQty">
+        
+        <button mat-icon-button  (click)="decreaseQty(item)"><mat-icon>remove</mat-icon></button>
+        <span>{{item.quantity}}</span>
+        <button mat-icon-button  (click)="increaseQty(item)" ><mat-icon>add</mat-icon></button>
+      </div>
 
       <mat-card-actions>
         <button mat-button color="warn" (click)="removeItem(item.productId)">
