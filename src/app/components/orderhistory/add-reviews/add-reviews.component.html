@@ -1,15 +1,15 @@
 <div class="form">
     <div class="container">
-        <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="reviewForm" class="form" (ngSubmit)="onSubmit()">
             <h4 style="margin-right: 50px;">Add Product Review</h4>
             <mat-form-field>
                 <mat-label>Add product reviews</mat-label>
                 <input matInput formControlName="productReview">
             </mat-form-field>
             <br>
-            <mat-label style="margin-left: 40px;">Add Rating</mat-label>
+            <mat-label>Add Rating</mat-label>
             <ngx-star-rating  formControlName="rating" [id]="'rating'"></ngx-star-rating><br><br>
-            <div style="display: flex; margin-top: 30px;">
+            <div >
             <button style="margin-bottom: 10px; margin-left: 12px;margin-right: 10px;" mat-raised-button type="submit"
                 (click)="cancel()">Cancel
             </button>

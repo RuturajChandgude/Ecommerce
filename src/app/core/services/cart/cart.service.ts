@@ -7,20 +7,29 @@ import { ProductsService } from '../products/products.service';
 })
 export class CartService {
   constructor(private productService:ProductsService) { }
-  private cartKey='cart';
+  private cartKey='carts';
   public productData:GetProduct[]=[]
   public currentUser= JSON.parse(localStorage.getItem('currentUser') || '[]')
+  public carts:CartProducts[]=[];
+
   public getCartProducts():CartProducts[]{
     return JSON.parse(localStorage.getItem(this.cartKey) || '[]')
   }
+ 
+  public saveAllCarts(allcarts:CartProducts[]){
+    localStorage.setItem(this.cartKey,JSON.stringify(allcarts))
+  }
 
   public getCartProductByUser(userId:number):CartProducts[]{
-  const cartData=localStorage.getItem(`${this.cartKey}_${userId}`);
-  return cartData?JSON.parse(cartData):[]
+  const allCartData=this.getCartProducts()
+  return allCartData.filter(item=>Number(item.userId)===userId)
   }
 
   public saveCartProducts(cart:CartProducts[],userId:string){
-    localStorage.setItem(`${this.cartKey}_${userId}`,JSON.stringify(cart))
+    let allcarts=this.getCartProducts();
+    allcarts=allcarts.filter(item=>item.userId!==userId);
+    allcarts.push(...cart);
+    this.saveAllCarts(allcarts);
   }
 
   public addToCart(userId:string,product:GetProduct,qty:number){
@@ -28,16 +37,16 @@ export class CartService {
       alert('This product is out of stock');
       return;
     }
-    const cart=this.getCartProductByUser(Number(userId));
-    const index=cart.findIndex((item)=>item.productId===product.productId);
+    const userCart=this.getCartProductByUser(Number(userId));
+    const index=userCart.findIndex((item)=>item.productId===product.productId);
 
     if(index!==-1){
-      if(cart[index].quantity+qty>product.productQuantity){
+      if(userCart[index].quantity+qty>product.productQuantity){
         alert('Not enough stock available');
         return;
       }
-      cart[index].quantity+=qty;
-      cart[index].total=cart[index].quantity*cart[index].productCost;
+      userCart[index].quantity+=qty;
+      userCart[index].total=userCart[index].quantity*userCart[index].productCost;
     }
     else{
       if(qty>product.productQuantity)
@@ -46,7 +55,7 @@ export class CartService {
         return;
       }
    
-      cart.push({
+      userCart.push({
         userId:userId,
         productId:product.productId,
         productName:product.productName,
@@ -56,13 +65,14 @@ export class CartService {
         total:qty*product.productCost
       })
     }
-    this.saveCartProducts(cart,userId);
+    
+    this.saveCartProducts(userCart,userId);
   }
 
   public updateQuantity(userId:string,productId:number,newQty:number)
   {
-    const cart=this.getCartProductByUser(Number(userId));
-    const index=cart.findIndex(item=>item.productId===productId);
+    const userCart=this.getCartProductByUser(Number(userId));
+    const index=userCart.findIndex(item=>item.productId===productId);
 
     const productArray:GetProduct[]=this.productService.getProducts();
     const currProduct:GetProduct | undefined=productArray.find(item=>item.productId===productId)
@@ -84,28 +94,35 @@ export class CartService {
           alert('Not enough stock available');
           return;
         }
-        cart[index].quantity=newQty;
-        cart[index].total=newQty*cart[index].productCost;
+        userCart[index].quantity=newQty;
+        userCart[index].total=newQty*userCart[index].productCost;
       }
-      this.saveCartProducts(cart,userId);
+      this.saveCartProducts(userCart,userId);
     }
   }
   
   public removeFromCart(productId:number){
-    const cart=this.getCartProductByUser(this.currentUser.userId).filter((item)=>item.productId!==productId);
-    this.saveCartProducts(cart,this.currentUser.userId);
+    const currentUser=JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const userId=currentUser.userId;
+    const updateCart=this.getCartProductByUser(userId).filter(item=>item.productId!==productId)
+    this.saveCartProducts(updateCart,userId);
   }
 
   public clearCart(){
-    localStorage.removeItem(`${this.cartKey}_${this.currentUser.userId}`);
+     const currentUser=JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const userId=currentUser.userId;
+    const allCarts=this.getCartProducts().filter(item=>item.userId!==userId)
+    this.saveCartProducts(allCarts,userId);
   }
 
   public getTotalAmountCart(){
+    const currentUser=JSON.parse(localStorage.getItem('currentUser') || '{}');
     return this.getCartProductByUser(this.currentUser.userId).reduce((sum,item)=>sum=sum+item.total,0);
   }
 
   public getCartTotalCount(){
     //return this.getCartProductByUser(this.currentUser.userId).reduce((sum,item)=>sum+item.quantity,0);
+    const currentUser=JSON.parse(localStorage.getItem('currentUser') || '{}');
     return this.getCartProductByUser(this.currentUser.userId).length
   }
 }

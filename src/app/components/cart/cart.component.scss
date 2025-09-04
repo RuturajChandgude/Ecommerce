@@ -62,9 +62,9 @@
 }
 
 .cart-summary {
-    text-align: right;
+    text-align: center;
     margin-top: 30px;
-
+    
     h3 {
         font-size: 22px;
         font-weight: bold;
@@ -73,6 +73,9 @@
 
     button {
         margin-left: 10px;
+    }
+    .productsummary{
+        text-align: center;
     }
 }
 .editQty{

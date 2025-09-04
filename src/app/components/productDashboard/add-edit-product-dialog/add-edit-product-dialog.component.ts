@@ -9,6 +9,7 @@ import { ProductsService } from '../../../core/services/products/products.servic
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { UpdateProduct } from '../../../core/models/products/update-product';
 import {MatSelectModule} from '@angular/material/select';
+import { ProductCategory } from '../../../core/models/category/product-category';
 @Component({
   selector: 'app-add-edit-product-dialog',
   imports: [MatSelectModule,MatDialogModule, MatButtonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
@@ -28,6 +29,7 @@ export class AddEditProductDialogComponent implements OnInit {
   public width: number = 0;
   public height: number = 0;
   public previewUrl: string[] = [];
+  public categoryArray:ProductCategory[]=[]
 
   constructor(private fb: FormBuilder, private productService: ProductsService, private dialogRef: MatDialogRef<AddEditProductDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: UpdateProduct) { }
 
@@ -36,9 +38,11 @@ export class AddEditProductDialogComponent implements OnInit {
       this.isEditMode = true;
       this.previewUrl = this.data.productImgUrl || [];
     }
+    this.categoryArray=JSON.parse(localStorage.getItem('productCategories') || '[]')
+ 
     this.productForm = this.fb.group({
       productName: [this.data ? this.data.productName : '', [Validators.required, this.noBlankspaceValidator]],
-      productCategory: [this.data ? this.data.productCategory : '', [Validators.required, this.noBlankspaceValidator]],
+      productCategory: [this.data ? this.data.productCategory : '', Validators.required],
       productImgUrl: [this.data ? this.data.productImgUrl : [], [Validators.required]],
       productCost: [this.data ? this.data.productCost : 0, Validators.required],
       productQuantity: [this.data ? this.data.productQuantity : 0, Validators.required],

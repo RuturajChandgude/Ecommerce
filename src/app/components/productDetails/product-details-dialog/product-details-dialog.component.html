@@ -2,36 +2,77 @@
 
 <mat-dialog-content style="margin-left: 30px;">
   <div class="scroll-wrapper">
-  @for(img of data.productImgUrl;track data.productImgUrl){
-  <img  class="images" [src]="img">
-  }
+    @for(img of data.productImgUrl;track img){
+    <img class="images" [src]="img">
+    }
   </div>
   <div style="margin-left: 30px;">
-  <p><strong>Category:</strong> {{ data.productCategory }}</p>
-  <p><strong>Price:</strong> ₹{{ data.productCost }}</p>
-  <p><strong>Available:</strong> {{ data.productQuantity }}</p>
-  <p><strong>Weight:</strong> {{ data.weight }} kg</p>
-  <p><strong>Color:</strong> {{ data.color }}</p>
-  <p><strong>Dimensions: </strong>{{data.width}} cm X {{ data.height }} cm</p>
+    <p><strong>Category:</strong> {{ data.productCategory }}</p>
+    <p><strong>Price:</strong> Rs {{ data.productCost }}</p>
+    <p><strong>Weight:</strong> {{ data.weight }} kg</p>
+    <p><strong>Color:</strong> {{ data.color }}</p>
+    <p><strong>Dimensions: </strong>{{data.width}} cm X {{ data.height }} cm</p>
+     @if(data.productQuantity < 5 && data.productQuantity > 0)
+    {
+      <p style="color: green"><strong >Only {{data.productQuantity}} left in the stock</strong></p>
+    }
+      @if(data.productQuantity == 0)
+    {
+      <p style="color: red"><strong >Product is out of stock</strong></p>
+    }
 
-  <div class="addDecrease">
-    <button mat-icon-button aria-label="Add" (click)="decrease()"><mat-icon>remove</mat-icon></button>
-    <span>{{ qty }}</span>
-    <button mat-icon-button aria-label="Subtract" (click)="increase()"><mat-icon>add</mat-icon></button>
-  </div>
+    <div class="addDecrease">
+      <button mat-icon-button aria-label="Add" (click)="decrease()"><mat-icon>remove</mat-icon></button>
+      <span>{{ qty }}</span>
+      <button mat-icon-button aria-label="Subtract" (click)="increase()"><mat-icon>add</mat-icon></button>
+    </div>
 
-  <p class="totalAmount">Total: ₹{{ total() }}</p><br><br>
+    <p class="totalAmount">Total: Rs{{ total() }}</p><br><br>
   </div>
-  <h2>Customer Reviews: </h2>
+  <h3>Customer Reviews: </h3>
   <mat-dialog-content style="background-color: antiquewhite;">
     @for(review of reviewData;track review.reviewId)
     {
     <h4>User: {{review.userName}}</h4>
     <p>Review: {{review.reviewText}}</p>
-    <p>Rating : {{review.rating}}</p>
+    <div class="reviewRatingDelete">
+      <p>Rating : {{review.rating}}</p>
+    @if(review.userId===currentUser.userId)
+    {
+      <mat-icon (click)="deleteReview(review.reviewId)">delete</mat-icon>
+    }
+    </div>
+    
     }
   </mat-dialog-content>
+  <h3>Similar Products: </h3>
+  <div class="similar-products">
+    @if(similarProducts.length>0)
+    {
+    <div class="similar-grid">
+      @for(product of similarProducts;track product.productId)
+      {
+      <mat-card class="similar-product-card">
+        @if(product.productImgUrl.length>1)
+        {
+        <img mat-card-image class="img" [src]="product.productImgUrl[0]">
+        }
+        <mat-card-content>
+          <p class="productName">
+            {{product.productName}}
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button class="viewDetailsBtn" (click)="getSimilarProduct(product)" matButton>View Details</button>
+        </mat-card-actions>
+      </mat-card>
+      }
+    </div>
+    }
+  </div>
 </mat-dialog-content>
+
+
 
 <mat-dialog-actions align="end">
   <button mat-raised-button (click)="addToCart()">Add to Cart</button>

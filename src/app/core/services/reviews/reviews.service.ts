@@ -7,10 +7,7 @@ import { Reviews } from '../../models/reviews/reviews';
 export class ReviewsService {
   public currentUser=JSON.parse(localStorage.getItem('currentUser') || '[]');
   public reviews:Reviews[]=[];
-  constructor() {
-    const storedreviews=localStorage.getItem('reviews')
-    this.reviews=storedreviews?JSON.parse(storedreviews):[]
-   }
+  constructor() {}
   
   public loadReviews():Reviews[]{
     return JSON.parse(localStorage.getItem('reviews') || '[]');
@@ -36,6 +33,11 @@ export class ReviewsService {
   public getReviewByProduct(productId:number){
     const reviews=this.loadReviews()
     return reviews.filter(review=>review.productId===productId)
+  }
+
+  public deleteReview(deleteReviewId:number){
+    const reviews=this.loadReviews().filter(review=>review.reviewId!=deleteReviewId);
+    localStorage.setItem('reviews',JSON.stringify(reviews));
   }
 
 }

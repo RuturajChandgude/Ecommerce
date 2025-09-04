@@ -28,3 +28,29 @@ img {
         display: inline-block;
     }
 }
+.images{
+    width: 300px;
+    height: 300px;
+}
+.productName{
+    font-size: 20px;
+    text-align: center;
+}
+.viewDetailsBtn{
+  width: 100%;
+  max-width: 150px;
+  height: 45px;
+  margin: 12px auto;
+  display: block;
+  border: 2px solid #3f51b5;
+  border-radius: 8px;
+  background: #3f51b5;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+.reviewRatingDelete{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

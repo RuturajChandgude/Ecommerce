@@ -44,7 +44,12 @@
 }
   @if(cart.length>0){
     <div class="cart-summary">
-    <h3>Grand Total: Rs{{totalAmount()}}</h3>
+      <h4>Order Summary</h4>
+    @for(item of cart;track item.productId)
+    {
+      <p class="productsummary">{{item.productName}} : Rs {{item.productCost}} X {{item.quantity}} =  Rs {{item.total}}</p>
+    }
+    <h3>Grand Total: Rs {{totalAmount()}}</h3>
     <button mat-raised-button color="primary" (click)="buyNow()">Buy Now</button>
     <button mat-button color="warn" (click)="clearCart()">Clear Cart</button>
   </div>

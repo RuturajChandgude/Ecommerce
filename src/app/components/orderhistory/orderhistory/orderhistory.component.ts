@@ -33,7 +33,7 @@ export class OrderhistoryComponent implements OnInit {
     dialogRef.afterClosed().subscribe(review=>{
       if(review)
       {
-        console.log(typeof(review.productReview));
+        console.log(typeof(review));
         this.reviewService.AddReviews(review.productReview,review.rating,productId)
       }
     })

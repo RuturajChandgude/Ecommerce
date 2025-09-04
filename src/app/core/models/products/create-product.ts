@@ -1,7 +1,9 @@
+import { ProductCategory } from "../category/product-category";
+
 export interface CreateProduct {
     productId:number,
     productName: string,
-    productCategory: string,
+    productCategory: ProductCategory,
     productImgUrl:string[],
     productCost: number,
     productQuantity:number,

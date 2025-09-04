@@ -23,8 +23,7 @@ export class ProductDetailsComponent implements OnInit {
     const storedData = localStorage.getItem('products');
     if (storedData) {
       this.productsData = JSON.parse(storedData)
-    }
-    
+    } 
   }
 
   public openProductDetailsDialog(product: GetProduct) {

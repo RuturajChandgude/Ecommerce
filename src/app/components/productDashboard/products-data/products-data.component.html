@@ -1,9 +1,24 @@
-<br> <button mat-raised-button color="primary" (click)="openAddDialog()"><mat-icon>add</mat-icon>Add Product</button>
+<br>
+<div style="display: flex;align-items: center;">
+ <button mat-raised-button color="primary" (click)="openAddDialog()"><mat-icon>add</mat-icon>Add Product</button>
 
+<h4 style="margin-left: 30px;">Filter by category</h4>
+
+<mat-form-field>
+  <mat-label>Category</mat-label>
+  <mat-select (selectionChange)="searchSelectedCategoryProducts(selectedCategory)" [(value)]="selectedCategory">
+    @for (category of productCategories; track category) {
+      <mat-option [value]="category.productCategory">{{category.productCategory}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+
+ <p>{{selectedCategory}}</p>
 <mat-form-field class="searchBar">
     <mat-label>Search</mat-label>
     <input matInput placeholder="Search here..." (keyup)="onSearch($event)">
 </mat-form-field><br>
+</div>
 
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
     <ng-container matColumnDef="productId">
