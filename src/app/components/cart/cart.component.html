@@ -4,7 +4,7 @@
   <div *ngIf="cart.length === 0" class="empty-cart">
     <mat-icon>remove_shopping_cart</mat-icon>
     <p>No items in your cart.</p>
-    <button mat-raised-button color="primary" routerLink="/productDetails">Shop Now</button>
+    <button mat-raised-button type="button" (click)="shopNow()">Shop Now</button>
   </div>
 
   @if (cart.length > 0){

@@ -7,7 +7,7 @@
     }
   </div>
   <div style="margin-left: 30px;">
-    <p><strong>Category:</strong> {{ data.productCategory }}</p>
+    <p><strong>Category:</strong> {{ data.productCategory.productCategory }}</p>
     <p><strong>Price:</strong> Rs {{ data.productCost }}</p>
     <p><strong>Weight:</strong> {{ data.weight }} kg</p>
     <p><strong>Color:</strong> {{ data.color }}</p>
@@ -31,6 +31,10 @@
   </div>
   <h3>Customer Reviews: </h3>
   <mat-dialog-content style="background-color: antiquewhite;">
+    @if(reviewData.length>0)
+    {
+
+    
     @for(review of reviewData;track review.reviewId)
     {
     <h4>User: {{review.userName}}</h4>
@@ -42,7 +46,9 @@
       <mat-icon (click)="deleteReview(review.reviewId)">delete</mat-icon>
     }
     </div>
-    
+    }}
+    @else{
+      <h4>No reviews yet.</h4>
     }
   </mat-dialog-content>
   <h3>Similar Products: </h3>

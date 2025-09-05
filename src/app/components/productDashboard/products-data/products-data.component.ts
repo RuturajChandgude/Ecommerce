@@ -14,40 +14,45 @@ import { MatIconModule } from '@angular/material/icon';
 import { UpdateProduct } from '../../../core/models/products/update-product';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { ProductCategory } from '../../../core/models/category/product-category';
-import {MatSelectModule} from '@angular/material/select';
-import { MatSelectChange } from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-products-data',
-  imports: [CommonModule,MatSelectModule, MatSortModule, MatPaginatorModule, MatIconModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatTableModule, MatDialogModule],
+  imports: [CommonModule,FormsModule,MatButtonToggleModule, MatSelectModule, MatSortModule, MatPaginatorModule, MatIconModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatTableModule, MatDialogModule],
   templateUrl: './products-data.component.html',
   styleUrl: './products-data.component.scss'
 })
 export class ProductsDataComponent implements OnInit, AfterViewInit {
-  public displayedColumns: string[] = ['productId', 'productName', 'productCategory', 'productCost','productQuantity','weight','color','width','height', 'edit', 'delete'];
-  public allProducts=JSON.parse(localStorage.getItem('products') || '[]');
-  public allProductsArray:GetProduct[]=Object.values(this.allProducts);
+  public displayedColumns: string[] = ['productId', 'productName', 'productCategory', 'productCost', 'productQuantity', 'weight', 'color', 'width', 'height', 'edit', 'delete'];
+  public allProducts = JSON.parse(localStorage.getItem('products') || '[]');
   public dataSource = new MatTableDataSource<GetProduct>();
+  public productCategories = JSON.parse(localStorage.getItem('productCategories') || '[]')
+  public selectedCategory: string = '';
+  public selectedFilter:string='';
+  public categories: ProductCategory[] = [
+    { productCategoryId: 1, productCategory: 'Electronics' },
+    { productCategoryId: 2, productCategory: 'Groceries' },
+    { productCategoryId: 3, productCategory: 'Sports and Fitness' },
+    { productCategoryId: 4, productCategory: 'Appliances' },
+    { productCategoryId: 5, productCategory: 'Fashion' },
+    { productCategoryId: 6, productCategory: 'Books' }
+  ]
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  public productCategories=JSON.parse(localStorage.getItem('productCategories') || '[]')
-  public selectedCategory=''
-  public categories:ProductCategory[]=[
-      { productCategoryId:1 ,productCategory:'Electronics'},
-      { productCategoryId:2 ,productCategory:'Groceries'},
-      { productCategoryId:3 ,productCategory:'Sports and Fitness'},
-      { productCategoryId:4 ,productCategory:'Appliances'},
-      { productCategoryId:5 ,productCategory:'Fashion'},
-      { productCategoryId:6 ,productCategory:'Books'}
-    ]
 
   constructor(private productService: ProductsService, private dialog: MatDialog) { }
   ngOnInit() {
     this.loadProducts();
-    const categoryArrayString=JSON.stringify(this.categories);
-    localStorage.setItem('productCategories',categoryArrayString)
-    console.log(this.allProducts)
-    console.log(typeof(this.allProducts[0]))
-    console.log(Object.values(this.allProducts))
+    const categoryArrayString = JSON.stringify(this.categories);
+    localStorage.setItem('productCategories', categoryArrayString);
+    this.dataSource.filterPredicate=(data:GetProduct,filter:string)=>{
+      const filterNumber=parseFloat(filter);
+      return data.productCategory.productCategory.toLowerCase().includes(filter) || data.productName.toLowerCase().includes(filter)
+       || data.productCost===filterNumber || data.weight===filterNumber || data.color.toLowerCase().includes(filter) 
+       || data.width===filterNumber || data.height===filterNumber
+    }
     
   }
 
@@ -55,7 +60,7 @@ export class ProductsDataComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-  
+
   public loadProducts() {
     const productData = this.productService.getProducts();
     if (productData) {
@@ -105,13 +110,26 @@ export class ProductsDataComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = searchValue.trim().toLowerCase();
   }
 
-  public searchSelectedCategoryProducts(selectedCategory:string)
-  {
-    const filteredData=this.allProductsArray.filter(item=>{
-    return item.productCategory.productCategory.toLowerCase().includes(selectedCategory.trim().toLowerCase())
-    })
-    console.log(filteredData)
-    this.dataSource.data=filteredData;
+  public searchSelectedCategoryProducts() {
+    const filteredArray= this.allProducts.filter((item:GetProduct) =>
+      item.productCategory.productCategory === this.selectedCategory
+    ) 
+    this.dataSource.data =filteredArray;
+  }
+  
+  public applyFilter(){
+    const productData = this.productService.getProducts();
+    if(this.selectedFilter==='all')
+    {
+      this.dataSource.data=productData
+    }
+    else if(this.selectedFilter==='inStock')
+    {
+      this.dataSource.data=productData.filter(item=>item.productQuantity>0)
+    }
+    else{
+      this.dataSource.data=productData.filter(item=>item.productQuantity==0)
+    }
   }
 
 }

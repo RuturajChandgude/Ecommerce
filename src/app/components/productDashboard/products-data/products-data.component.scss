@@ -1,6 +1,7 @@
-.searchBar{
-    margin-left: 370px;
-   
+.productFeatures{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 mat-form-field {
   width: 300px; 

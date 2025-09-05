@@ -10,6 +10,7 @@ import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { UpdateProduct } from '../../../core/models/products/update-product';
 import {MatSelectModule} from '@angular/material/select';
 import { ProductCategory } from '../../../core/models/category/product-category';
+import { MatSelectChange } from '@angular/material/select';
 @Component({
   selector: 'app-add-edit-product-dialog',
   imports: [MatSelectModule,MatDialogModule, MatButtonModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
@@ -20,7 +21,7 @@ export class AddEditProductDialogComponent implements OnInit {
   public productForm!: FormGroup;
   public isEditMode = false;
   public productName: string = '';
-  public productCategory: string = '';
+  public productCategory:ProductCategory[]=[];
   public productImgUrl: [] = [];
   public productCost: number = 0;
   public productQuantity: number = 0;
@@ -28,9 +29,10 @@ export class AddEditProductDialogComponent implements OnInit {
   public color: string = '';
   public width: number = 0;
   public height: number = 0;
+  public voltage:number=0;
   public previewUrl: string[] = [];
   public categoryArray:ProductCategory[]=[]
-
+  public selectedCategoryValue:string=''
   constructor(private fb: FormBuilder, private productService: ProductsService, private dialogRef: MatDialogRef<AddEditProductDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: UpdateProduct) { }
 
   ngOnInit() {
@@ -42,14 +44,15 @@ export class AddEditProductDialogComponent implements OnInit {
  
     this.productForm = this.fb.group({
       productName: [this.data ? this.data.productName : '', [Validators.required, this.noBlankspaceValidator]],
-      productCategory: [this.data ? this.data.productCategory : '', Validators.required],
+      productCategory: [this.data ? this.data.productCategory : [], Validators.required],
       productImgUrl: [this.data ? this.data.productImgUrl : [], [Validators.required]],
       productCost: [this.data ? this.data.productCost : 0, Validators.required],
       productQuantity: [this.data ? this.data.productQuantity : 0, Validators.required],
       weight: [this.data ? this.data.weight : '', Validators.required],
       color: [this.data ? this.data.color : '', [Validators.required, this.noBlankspaceValidator]],
       width: [this.data ? this.data.width : '', Validators.required],
-      height: [this.data ? this.data.height : '', Validators.required]
+      height: [this.data ? this.data.height : '', Validators.required],
+      voltage:[this.data?this.data.voltage:0,Validators.required] 
     })
   }
 
@@ -58,6 +61,10 @@ export class AddEditProductDialogComponent implements OnInit {
       return { whitespace: true };
     }
     return null;
+  }
+
+  public onSelectionChange(event:MatSelectChange){
+    this.selectedCategoryValue=event.value.productCategory
   }
 
   public onFileSelected(event: Event) {
@@ -73,13 +80,12 @@ export class AddEditProductDialogComponent implements OnInit {
         reader.onload = (e: any) => {
           const result=e.target.result as string
           this.previewUrl.push(result);
-          console.log(this.previewUrl);
           this.productForm.patchValue({productImgUrl:[...this.previewUrl]})
         }
         reader.readAsDataURL(file);
       }
     }
-    //input.value=''
+  
   }
 
   public onSubmit() {

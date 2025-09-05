@@ -7,6 +7,7 @@ import { ProductsService } from '../../core/services/products/products.service';
 import { CartProducts } from '../../core/models/cart/cart-products';
 import { MatIconModule } from '@angular/material/icon';
 import { OrdersService } from '../../core/services/orders/orders.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-cart',
   imports: [CommonModule, MatCardModule, MatIconModule, MatButtonModule],
@@ -16,7 +17,7 @@ import { OrdersService } from '../../core/services/orders/orders.service';
 export class CartComponent implements OnInit {
   cart: CartProducts[] = [];
   public currentUser= JSON.parse(localStorage.getItem('currentUser') || '[]')
-  constructor(private cartService: CartService, private productService: ProductsService,private orderService:OrdersService) { }
+  constructor(private router:Router,private cartService: CartService, private productService: ProductsService,private orderService:OrdersService) { }
   ngOnInit() {
     this.loadCart();
   }
@@ -56,5 +57,9 @@ export class CartComponent implements OnInit {
     this.productService.updateStockAfterPurchase(this.cart);
     alert('Order placed!');
     this.clearCart();
+  }
+
+  public shopNow(){
+     this.router.navigate(['/productDetails'])
   }
 }

@@ -1,9 +1,16 @@
 <div class="product-grid">
     @for (product of productsData;track product.productImgUrl){
+
     <mat-card class="product-card" appearance="outlined">
         @if(productsData.length>1)
         {
-        <img mat-card-image class="img" [src]="product.productImgUrl[0]">
+        <div class="wrapper">
+            <img style="width: 350px;" mat-card-image class="img" [src]="product.productImgUrl[0]">
+            @if(product.productQuantity < 1) 
+            {
+             <span>Out of stock</span>
+            }
+        </div>
         }
         <mat-card-content>
             <p>
@@ -14,5 +21,6 @@
             <button (click)="openProductDetailsDialog(product)" matButton>View Details</button>
         </mat-card-actions>
     </mat-card>
+
     }
 </div>

@@ -18,6 +18,7 @@ export class ReviewsService {
   }
    
   public AddReviews(reviewText:string,rating:string,productId:number){
+    this.reviews=this.loadReviews();
     const newReview={
       reviewId:Date.now(),
       reviewText:reviewText,

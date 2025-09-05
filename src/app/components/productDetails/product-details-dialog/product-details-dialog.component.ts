@@ -28,8 +28,9 @@ export class ProductDetailsDialogComponent implements OnInit {
 
   ngOnInit() {
    this.reviewData= this.reviewService.getReviewByProduct(this.data.productId);
-   this.similarProducts=this.productService.getProducts().filter(p=>p.productCategory===this.data.productCategory && p.productId!==this.data.productId)
+   this.similarProducts=this.productService.getProducts().filter(p=>p.productCategory.productCategory===this.data.productCategory.productCategory && p.productId!==this.data.productId)
   }
+  
   public increase() {
     if(this.data.productQuantity==0)
     {

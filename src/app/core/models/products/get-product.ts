@@ -10,5 +10,6 @@ export interface GetProduct {
     weight:number,
     color:string,
     width:number,
-    height:number
+    height:number,
+    voltage:number
 }
