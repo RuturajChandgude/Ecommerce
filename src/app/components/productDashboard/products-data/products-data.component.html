@@ -1,13 +1,14 @@
 <br>
 <div class="productFeatures" style="display: flex;align-items: center;justify-content: space-between;">
  <button mat-raised-button color="primary" (click)="openAddDialog()"><mat-icon>add</mat-icon>Add Product</button>
-
+ <button mat-raised-button color="primary" (click)="openAddBulk()"><mat-icon>add</mat-icon>Add Bulk</button>
+ 
 <h4 style="margin-left: 30px;">Filter by category</h4>
 
 <mat-form-field>
   <mat-label>Category</mat-label>
   <mat-select (selectionChange)="searchSelectedCategoryProducts()" [(value)]="selectedCategory">
-    @for (category of productCategories; track category) {
+    @for (category of categories; track category) {
       <mat-option [value]="category.productCategory">{{category.productCategory}}</mat-option>
     }
   </mat-select>

@@ -17,6 +17,7 @@ import { ProductCategory } from '../../../core/models/category/product-category'
 import { MatSelectModule } from '@angular/material/select';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { FormsModule } from '@angular/forms';
+import { AddBulkOrderComponent } from '../add-bulk-order/add-bulk-order.component';
 
 @Component({
   selector: 'app-products-data',
@@ -44,7 +45,9 @@ export class ProductsDataComponent implements OnInit, AfterViewInit {
 
   constructor(private productService: ProductsService, private dialog: MatDialog) { }
   ngOnInit() {
+    console.log(this.productService.getProducts())
     this.loadProducts();
+    this.categories.sort((a,b)=> a.productCategory.localeCompare(b.productCategory))
     const categoryArrayString = JSON.stringify(this.categories);
     localStorage.setItem('productCategories', categoryArrayString);
     this.dataSource.filterPredicate=(data:GetProduct,filter:string)=>{
@@ -61,6 +64,16 @@ export class ProductsDataComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
+  public openAddBulk(){
+    const productData=this.productService.getProducts();
+    const dialogRef=this.dialog.open(AddBulkOrderComponent,{
+      width:'600px',
+      height:'500px',
+    
+      data:productData
+    })
+    console.log(productData)
+  }
   public loadProducts() {
     const productData = this.productService.getProducts();
     if (productData) {

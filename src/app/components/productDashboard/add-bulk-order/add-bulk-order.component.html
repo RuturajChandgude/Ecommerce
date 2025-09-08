@@ -1,0 +1,15 @@
+<div>
+    <mat-dialog-content>
+    @for(p of data;track p.productId;let i=$index)
+    {
+         <mat-checkbox [checked]="isChecked" (change)="onCheckBoxChange(p.productId,$event)" >Select</mat-checkbox>
+        <p>{{p.productName}}</p>
+        <div class="addDecrease">
+       <button mat-icon-button aria-label="Add" (click)="decrease(p.productId)"><mat-icon>remove</mat-icon></button>
+      <span>{{ selectedProduct[1] }}</span>
+      <button mat-icon-button aria-label="Subtract" (click)="increase(p.productId)"><mat-icon>add</mat-icon></button>
+      
+    </div>
+    }
+    </mat-dialog-content>
+</div>
