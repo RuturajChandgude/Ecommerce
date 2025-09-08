@@ -11,5 +11,5 @@ export interface GetProduct {
     color:string,
     width:number,
     height:number,
-    voltage:number
+    voltage?:number
 }

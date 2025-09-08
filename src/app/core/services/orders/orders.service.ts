@@ -26,7 +26,7 @@ export class OrdersService {
     const newOrder = {
       orderId: Date.now().toString(),
       userId: userId,
-      order: cart,
+      orders: cart,
       orderDate: new Date().toISOString()
     }
     this.orders.push(newOrder);

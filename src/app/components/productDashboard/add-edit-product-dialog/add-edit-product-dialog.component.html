@@ -4,8 +4,24 @@
             <mat-form-field>
                 <mat-label>Product Name</mat-label>
                 <input matInput formControlName="productName">
+                @if(productForm.get('productName')?.hasError('required'))
+                {
+                    <mat-error >Product Name is required</mat-error>
+                }
             </mat-form-field>
             <br>
+            @if(isEditMode)
+            {
+            <mat-form-field>
+                <mat-label>{{data.productCategory.productCategory}}</mat-label>
+                <mat-select (selectionChange)="onSelectionChange($event)" formControlName="productCategory">
+                    @for (category of categoryArray; track category) {
+                    <mat-option [value]="category">{{category.productCategory}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+            }
+            @else{
             <mat-form-field>
                 <mat-label>Product Category</mat-label>
                 <mat-select (selectionChange)="onSelectionChange($event)" formControlName="productCategory">
@@ -13,55 +29,103 @@
                     <mat-option [value]="category">{{category.productCategory}}</mat-option>
                     }
                 </mat-select>
+                @if(productForm.get('productCategory')?.hasError('required'))
+                {
+                    <mat-error >Product category is required</mat-error>
+                }
             </mat-form-field>
-            <br>
-            <!-- <p>{{selectedCategoryValue}}</p> -->
 
+            <br>}
+
+            @if(isEditMode)
+            {
+            <mat-label>Edit Uploaded Image</mat-label>
+            <input class="hideText" type="file" (change)="onFileSelected($event)" multiple
+                formControlName="productImgUrl">
+            <p>{{data.productImgUrl.length}} files</p>
+            @for(img of data.productImgUrl;track img)
+            {
+            <img width="100px" height="100px" style="margin-right: 4px;" [src]="img" alt="">
+            }
+            }
+            @else{
             <mat-label>Upload Image</mat-label>
             <input type="file" (change)="onFileSelected($event)" multiple formControlName="productImgUrl">
-
+            @if(productForm.get('productImgUrl')?.hasError('required'))
+                {
+                    <mat-error >Product Image is required</mat-error>
+                }
+            }
             <br> <br>
             <mat-form-field>
                 <mat-label>Product Cost</mat-label>
                 <input matInput type="number" formControlName="productCost">
+                @if(productForm.get('productCost')?.hasError('required'))
+                {
+                    <mat-error >Product cost is required</mat-error>
+                }
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Product Quantity</mat-label>
                 <input matInput type="number" formControlName="productQuantity">
+                @if(productForm.get('productQuantity')?.hasError('required'))
+                {
+                    <mat-error >Product Quantity is required</mat-error>
+                }
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Weight</mat-label>
                 <input matInput type="number" formControlName="weight">
+                @if(productForm.get('weight')?.hasError('required'))
+                {
+                    <mat-error >Product weight is required</mat-error>
+                }
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Color</mat-label>
                 <input matInput formControlName="color">
+                @if(productForm.get('color')?.hasError('required'))
+                {
+                    <mat-error >Product color is required</mat-error>
+                }
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Width</mat-label>
                 <input matInput type="number" formControlName="width">
+                @if(productForm.get('width')?.hasError('required'))
+                {
+                    <mat-error >Product width is required</mat-error>
+                }
             </mat-form-field>
             <br>
 
             <mat-form-field>
                 <mat-label>Height</mat-label>
                 <input matInput type="number" formControlName="height">
+                @if(productForm.get('height')?.hasError('required'))
+                {
+                    <mat-error >Product height is required</mat-error>
+                }
             </mat-form-field>
             <br>
             @if(selectedCategoryValue==='Electronics'){
             <mat-form-field>
                 <mat-label>Voltage</mat-label>
                 <input matInput type="number" formControlName="voltage">
+                @if(productForm.get('voltage')?.hasError('required'))
+                {
+                    <mat-error >Product voltage is required</mat-error>
+                }
             </mat-form-field>
             <br>
             }
             @if(isEditMode && data.productCategory.productCategory==='Electronics')
             {
-                <mat-form-field>
+            <mat-form-field>
                 <mat-label>Voltage</mat-label>
                 <input matInput type="number" formControlName="voltage">
             </mat-form-field>

@@ -54,3 +54,13 @@ img {
     justify-content: space-between;
     align-items: center;
 }
+.similar-products{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.similar-grid{
+    display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 15px;
+}

@@ -46,13 +46,13 @@ export class AddEditProductDialogComponent implements OnInit {
       productName: [this.data ? this.data.productName : '', [Validators.required, this.noBlankspaceValidator]],
       productCategory: [this.data ? this.data.productCategory : [], Validators.required],
       productImgUrl: [this.data ? this.data.productImgUrl : [], [Validators.required]],
-      productCost: [this.data ? this.data.productCost : 0, Validators.required],
-      productQuantity: [this.data ? this.data.productQuantity : 0, Validators.required],
+      productCost: [this.data ? this.data.productCost : '', Validators.required],
+      productQuantity: [this.data ? this.data.productQuantity : '', Validators.required],
       weight: [this.data ? this.data.weight : '', Validators.required],
       color: [this.data ? this.data.color : '', [Validators.required, this.noBlankspaceValidator]],
       width: [this.data ? this.data.width : '', Validators.required],
       height: [this.data ? this.data.height : '', Validators.required],
-      voltage:[this.data?this.data.voltage:0,Validators.required] 
+      voltage:[this.data ? this.data.voltage:'',Validators.required] 
     })
   }
 

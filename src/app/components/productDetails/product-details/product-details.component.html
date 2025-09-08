@@ -1,14 +1,18 @@
 <div class="product-grid">
     @for (product of productsData;track product.productImgUrl){
-
+       
     <mat-card class="product-card" appearance="outlined">
         @if(productsData.length>1)
         {
         <div class="wrapper">
-            <img style="width: 350px;" mat-card-image class="img" [src]="product.productImgUrl[0]">
+            <img style="width: 370px;" mat-card-image class="img" [src]="product.productImgUrl[0]">
             @if(product.productQuantity < 1) 
             {
              <span>Out of stock</span>
+            }
+            @if(product.productQuantity < 5 && product.productQuantity > 0)
+            {
+             <span style="background-color: green;">Only {{product.productQuantity}} left</span>
             }
         </div>
         }

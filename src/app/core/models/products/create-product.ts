@@ -11,5 +11,5 @@ export interface CreateProduct {
     color:string,
     width:number,
     height:number,
-    voltage:number
+    voltage?:number
 }

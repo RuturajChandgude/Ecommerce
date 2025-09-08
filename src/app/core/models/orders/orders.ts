@@ -3,6 +3,6 @@ import { CartProducts } from "../cart/cart-products"
 export interface Orders {
     orderId:string,
     userId:string,
-    order:CartProducts[],
+    orders:CartProducts[],
     orderDate:string | Date
 }

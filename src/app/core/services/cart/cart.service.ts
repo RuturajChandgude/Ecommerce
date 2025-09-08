@@ -21,8 +21,26 @@ export class CartService {
   }
 
   public getCartProductByUser(userId:number):CartProducts[]{
-  const allCartData=this.getCartProducts()
-  return allCartData.filter(item=>Number(item.userId)===userId)
+  const products=this.productService.getProducts();
+  const userCart=this.getCartProducts().filter(c=>Number(c.userId)===userId)
+
+  return userCart.map(cartItem=>{
+    const product=products.find(p=>p.productId===cartItem.productId);
+    
+    if(product)
+    {
+      return {
+      ...cartItem,
+      productName:product.productName,
+      productCost:product.productCost,
+      productImgUrl:product.productImgUrl,
+      total:cartItem.quantity*product.productCost
+    }
+    }
+  
+    return cartItem 
+  })
+
   }
 
   public saveCartProducts(cart:CartProducts[],userId:string){
@@ -82,7 +100,7 @@ export class CartService {
       alert('Product not found in inventory');
       return;
     }
-    //const currProduct=this.productService.getProducts.find((item)=>item.productId==productId)
+   
     if(index!==-1)
     {
       if(newQty<1)
@@ -121,8 +139,7 @@ export class CartService {
   }
 
   public getCartTotalCount(){
-    //return this.getCartProductByUser(this.currentUser.userId).reduce((sum,item)=>sum+item.quantity,0);
     const currentUser=JSON.parse(localStorage.getItem('currentUser') || '{}');
-    return this.getCartProductByUser(this.currentUser.userId).length
+    return this.getCartProductByUser(currentUser.userId).length
   }
 }

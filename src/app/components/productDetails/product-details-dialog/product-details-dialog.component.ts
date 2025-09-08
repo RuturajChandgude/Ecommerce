@@ -69,6 +69,7 @@ export class ProductDetailsDialogComponent implements OnInit {
         console.log(this.userId)
       }
     }
+    console.log("Quantity",this.qty)
     this.cartService.addToCart(this.userId,this.data,this.qty);
     this.dialogRef.close();
   }

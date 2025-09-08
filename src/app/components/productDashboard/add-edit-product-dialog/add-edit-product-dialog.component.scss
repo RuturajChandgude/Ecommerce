@@ -1,9 +1,8 @@
-
 .form {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding:61px;
+    padding: 61px;
     background-color: rgb(174, 195, 233);
 }
 
@@ -20,4 +19,8 @@ mat-form-field {
 button {
     margin-top: 10px;
     margin-right: 10px;
+}
+
+.hideText {
+    color: transparent;
 }
