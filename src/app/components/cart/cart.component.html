@@ -9,13 +9,12 @@
 
   @if (cart.length > 0){
   <div class="cart-grid">
-    @for (item of cart;track item.productId){
+    @for (item of cart;track $index){
     <mat-card class="cart-item">
       <mat-card-header>
         <mat-card-title>{{ item.productName }}</mat-card-title>
       </mat-card-header>
       @if(cart.length>0){
-
         <img mat-card-image [src]="item.productImgUrl[0]"/>
       }
       <mat-card-content>
@@ -27,7 +26,7 @@
       <p class="edittext"><strong>Edit Quantity:</strong></p>
 
       <div class="editQty">
-        
+ 
         <button mat-icon-button  (click)="decreaseQty(item)"><mat-icon>remove</mat-icon></button>
         <span>{{item.quantity}}</span>
         <button mat-icon-button  (click)="increaseQty(item)" ><mat-icon>add</mat-icon></button>
@@ -45,7 +44,7 @@
   @if(cart.length>0){
     <div class="cart-summary">
       <h4>Order Summary</h4>
-    @for(item of cart;track item.productId)
+    @for(item of cart;track $index)
     {
       <p class="productsummary">{{item.productName}} : Rs {{item.productCost}} X {{item.quantity}} =  Rs {{item.total}}</p>
     }

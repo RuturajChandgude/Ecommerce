@@ -45,7 +45,6 @@ export class ProductsDataComponent implements OnInit, AfterViewInit {
 
   constructor(private productService: ProductsService, private dialog: MatDialog) { }
   ngOnInit() {
-    console.log(this.productService.getProducts())
     this.loadProducts();
     this.categories.sort((a,b)=> a.productCategory.localeCompare(b.productCategory))
     const categoryArrayString = JSON.stringify(this.categories);

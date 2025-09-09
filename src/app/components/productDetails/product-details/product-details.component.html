@@ -1,5 +1,5 @@
 <div class="product-grid">
-    @for (product of productsData;track product.productImgUrl){
+    @for (product of productsData;track $index){
        
     <mat-card class="product-card" appearance="outlined">
         @if(productsData.length>1)

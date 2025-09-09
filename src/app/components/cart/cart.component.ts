@@ -25,12 +25,15 @@ export class CartComponent implements OnInit {
     setTimeout(() => {
       this.loadCart();
       this.cdr.detectChanges()
-    }, );
+    },100);
+     //this.loadCart();
   }
  
 
   public loadCart() {
     const user=JSON.parse(localStorage.getItem('currentUser') || '[]');
+    console.log(this.cartService.getCartProductByUser(user.userId), 'load cart')
+    
     this.cart = this.cartService.getCartProductByUser(user.userId);
   }
 
@@ -41,12 +44,12 @@ export class CartComponent implements OnInit {
 
   public decreaseQty(item:CartProducts)
   {
-    this.cartService.updateQuantity(this.currentUser.userId,item.productId,item.quantity-1);
+    this.cartService.updateQuantity(String(this.currentUser.userId),item.productId,item.quantity-1);
     this.loadCart()
   }
 
   public increaseQty(item:CartProducts){
-    this.cartService.updateQuantity(this.currentUser.userId,item.productId,item.quantity+1);
+    this.cartService.updateQuantity(String(this.currentUser.userId),item.productId,item.quantity+1);
     this.loadCart()
   }
 

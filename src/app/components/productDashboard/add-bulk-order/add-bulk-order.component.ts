@@ -7,6 +7,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { CartService } from '../../../core/services/cart/cart.service';
 @Component({
   selector: 'app-add-bulk-order',
   imports: [MatDialogModule,MatCheckboxModule,FormsModule,MatIconModule],
@@ -19,10 +20,11 @@ export class AddBulkOrderComponent implements OnInit{
   public  selectedProduct:{[key:number]:number}={}
    
   isChecked: boolean = false;
-  constructor(private productService:ProductsService,private dialogRef:MatDialogRef<AddBulkOrderComponent>,@Inject(MAT_DIALOG_DATA) public data:GetProduct[]){}
+  constructor(private productService:ProductsService,private cartService:CartService,public dialogRef:MatDialogRef<AddBulkOrderComponent>,@Inject(MAT_DIALOG_DATA) public data:GetProduct[]){}
   ngOnInit() {
     console.log("Recieved data",this.data)
     this.products=this.productService.getProducts();
+    console.log('all products',this.products)
     //  this.selected=new Array(this.data.length).fill(false) 
   }
   
@@ -40,7 +42,7 @@ export class AddBulkOrderComponent implements OnInit{
         delete this.selectedProduct[productId]
       }
     }
-
+    
     public increase(productId:number) {
     this.selectedProduct[productId]++
     
@@ -50,6 +52,28 @@ export class AddBulkOrderComponent implements OnInit{
   public decrease(productId:number) {
    this.selectedProduct[productId]--;
   }
+ 
+   get selectedCount():number{
+    return Object.keys(this.selectedProduct).length
+   }
 
+  public addSelectedToCart()
+  {
+    const currentUser=JSON.parse(localStorage.getItem('currentUser') || '[]')
+    const userId=currentUser.userId
+    console.log("selectedproducts",this.selectedProduct)
+    console.log("products",this.products)
+    
+    Object.keys(this.selectedProduct).forEach(productId=>{
+      const product = this.data.find((p)=>
+        p.productId==Number(productId)
+      )
+        if(product)
+        {
+          this.cartService.addToCart(userId.toString(),product,this.selectedProduct[Number(productId)])
+        }
+    })
+    this.dialogRef.close()
+  }
   }
   
