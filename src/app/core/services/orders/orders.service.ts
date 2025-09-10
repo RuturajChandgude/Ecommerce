@@ -6,10 +6,9 @@ import { CartService } from '../cart/cart.service';
 })
 export class OrdersService {
   private orderKey = 'orders';
-   public orders: Orders[] = []
+  public orders: Orders[] = []
   constructor(private cartService: CartService) {
-    const data = localStorage.getItem(this.orderKey);
-    this.orders = data ? JSON.parse(data) : [];
+    this.loadOrders();
   }
 
   public loadOrders() {
@@ -29,10 +28,13 @@ export class OrdersService {
       orders: cart,
       orderDate: new Date().toISOString()
     }
+    this.loadOrders();
     this.orders.push(newOrder);
     this.saveOrder();
-    this.cartService.clearCart()
 
+    this.cartService.clearCart()
+    console.log('Order placed',newOrder);
+    return true;
   }
 
   public getOrderByUser(userId: string) {

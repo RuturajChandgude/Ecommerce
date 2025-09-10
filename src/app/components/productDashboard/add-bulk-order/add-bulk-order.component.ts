@@ -10,70 +10,72 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { CartService } from '../../../core/services/cart/cart.service';
 @Component({
   selector: 'app-add-bulk-order',
-  imports: [MatDialogModule,MatCheckboxModule,FormsModule,MatIconModule],
+  imports: [MatDialogModule, MatCheckboxModule, FormsModule, MatIconModule],
   templateUrl: './add-bulk-order.component.html',
-  styleUrl: './add-bulk-order.component.scss'
+  styleUrl: './add-bulk-order.component.scss',
 })
-export class AddBulkOrderComponent implements OnInit{
-  public products:GetProduct[]=[]
-  public qty=1;
-  public  selectedProduct:{[key:number]:number}={}
-   
+export class AddBulkOrderComponent implements OnInit {
+  public products: GetProduct[] = [];
+  public qty = 1;
+  public selectedProduct: { [key: number]: number } = {};
+
   isChecked: boolean = false;
-  constructor(private productService:ProductsService,private cartService:CartService,public dialogRef:MatDialogRef<AddBulkOrderComponent>,@Inject(MAT_DIALOG_DATA) public data:GetProduct[]){}
+  constructor(
+    private productService: ProductsService,
+    private cartService: CartService,
+    public dialogRef: MatDialogRef<AddBulkOrderComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: GetProduct[]
+  ) {}
   ngOnInit() {
-    console.log("Recieved data",this.data)
-    this.products=this.productService.getProducts();
-    console.log('all products',this.products)
-    //  this.selected=new Array(this.data.length).fill(false) 
+    console.log('Recieved data', this.data);
+    this.products = this.productService.getProducts();
+    //  this.selected=new Array(this.data.length).fill(false)
   }
-  
-  public onCheckBoxChange(productId:number,event:MatCheckboxChange)
-  {
-    if(event.checked)
-      {
-        // this.selectedProduct.push(product)
-        this.selectedProduct[productId]=1
-        // console.log("selected ",this.selectedProduct)
-      }
-      else{
-        // this.selectedProduct=this.selectedProduct.filter(i=>i.productId!==product.productId)
-        // console.log("selected ",this.selectedProduct)
-        delete this.selectedProduct[productId]
-      }
+
+  public onCheckBoxChange(productId: number, event: MatCheckboxChange) {
+    if (event.checked) {
+      // this.selectedProduct.push(product)
+      this.selectedProduct[productId] = 1;
+      // console.log("selected ",this.selectedProduct)
+    } else {
+      // this.selectedProduct=this.selectedProduct.filter(i=>i.productId!==product.productId)
+      // console.log("selected ",this.selectedProduct)
+      delete this.selectedProduct[productId];
     }
-    
-    public increase(productId:number) {
-    this.selectedProduct[productId]++
-    
-    console.log(this.selectedProduct)
   }
 
-  public decrease(productId:number) {
-   this.selectedProduct[productId]--;
-  }
- 
-   get selectedCount():number{
-    return Object.keys(this.selectedProduct).length
-   }
+  public increase(productId: number) {
+    this.selectedProduct[productId]++;
 
-  public addSelectedToCart()
-  {
-    const currentUser=JSON.parse(localStorage.getItem('currentUser') || '[]')
-    const userId=currentUser.userId
-    console.log("selectedproducts",this.selectedProduct)
-    console.log("products",this.products)
-    
-    Object.keys(this.selectedProduct).forEach(productId=>{
-      const product = this.data.find((p)=>
-        p.productId==Number(productId)
-      )
-        if(product)
-        {
-          this.cartService.addToCart(userId.toString(),product,this.selectedProduct[Number(productId)])
-        }
-    })
-    this.dialogRef.close()
+    console.log(this.selectedProduct);
   }
+  public get selectedCount(): number {
+    return Object.keys(this.selectedProduct).length;
   }
+
+  // public decrease(productId: number) {
+  //   this.selectedProduct[productId]--;
+  // }
+  public decrease(productId: number) {
+    if (this.selectedProduct[productId] > 1) {
+      this.selectedProduct[productId]--;
+    } else {
+      delete this.selectedProduct[productId];
+    }
+  }
+
+  public addSelectedToCart() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const userId = currentUser.userId;
+
+    Object.keys(this.selectedProduct).forEach((productId) => {
+      const product = this.data.find((p) => p.productId === Number(productId));
+      if (product) {
+        this.cartService.addToCart(userId.toString(),product,this.selectedProduct[Number(productId)]
+        );
+      }
+    });
+    this.dialogRef.close();
+  }
+}
   

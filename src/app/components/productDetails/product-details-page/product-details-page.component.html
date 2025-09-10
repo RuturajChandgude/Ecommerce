@@ -1,0 +1,69 @@
+<div class="product-details-container">
+  <h2 class="productName">{{ productData.productName }}</h2>
+
+  <div class="imagesAll">
+    @for (img of productData.productImgUrl; track img) {
+      <img class="images" [src]="img" />
+    }
+  </div>
+
+  <div class="details">
+    <p><strong>Category:</strong> {{ productData.productCategory.productCategory }}</p>
+    <p><strong>Price:</strong> Rs {{ productData.productCost }}</p>
+    <p><strong>Weight:</strong> {{ productData.weight }} kg</p>
+    <p><strong>Color:</strong> {{ productData.color }}</p>
+    <p><strong>Dimensions:</strong> {{ productData.width }} cm x {{ productData.height }} cm</p>
+
+    @if (productData.productQuantity < 5 && productData.productQuantity > 0) {
+      <p style="color: green"><strong>Only {{ productData.productQuantity }} left!</strong></p>
+    }
+    @if (productData.productQuantity == 0) {
+      <p style="color: red"><strong>Product is out of stock</strong></p>
+    }
+
+    <div class="addDecrease">
+      <button mat-icon-button (click)="decrease()"><mat-icon>remove</mat-icon></button>
+      <span>{{ qty }}</span>
+      <button mat-icon-button (click)="increase()"><mat-icon>add</mat-icon></button>
+    </div>
+
+    <p class="totalAmount">Total: Rs {{ total() }}</p>
+    <button mat-raised-button color="primary" (click)="addToCart()">Add to Cart</button>
+  </div>
+
+  <div class="reviews">
+  <h3 >Customer Reviews</h3>
+  @if (reviewData.length > 0) {
+    @for (review of reviewData; track review.reviewId) {
+      <h4>User: {{ review.userName }}</h4>
+      <p>Review: {{ review.reviewText }}</p>
+      <div class="reviewRatingDelete">
+        <p>Rating: {{ review.rating }}</p>
+        @if (review.userId === currentUser.userId) {
+          <mat-icon (click)="deleteReview(review.reviewId)">delete</mat-icon>
+        }
+      </div>
+    }
+  } @else {
+    <h4>No reviews yet.</h4>
+  }
+  </div>
+  <div class="similarProducts">
+  <h3>Similar Products</h3>
+  @if (similarProducts.length > 0) {
+    <div class="similar-grid">
+      @for (product of similarProducts; track product.productId) {
+        <mat-card class="similar-product-card">
+          <img width="400px" height="200px" mat-card-image [src]="product.productImgUrl[0]" />
+          <mat-card-content>
+            <p style="text-align: center;">{{ product.productName }}</p>
+          </mat-card-content>
+          <mat-card-actions >
+            <button mat-button (click)="getSimilarProduct(product)">View Details</button>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  }
+  </div>
+</div>

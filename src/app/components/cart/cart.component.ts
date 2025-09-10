@@ -22,22 +22,31 @@ export class CartComponent implements OnInit {
    cdr=inject(ChangeDetectorRef)
   constructor(private router:Router,private cartService: CartService, private productService: ProductsService,private orderService:OrdersService) { }
   ngOnInit() {
-    setTimeout(() => {
-      this.loadCart();
-      this.cdr.detectChanges()
-    },100);
+    // setTimeout(() => {
+    //   this.cdr.detectChanges()
+    // },100);
+    this.loadCart();
      //this.loadCart();
   }
  
 
   public loadCart() {
+    console.log('in load cart')
     const user=JSON.parse(localStorage.getItem('currentUser') || '[]');
-    console.log(this.cartService.getCartProductByUser(user.userId), 'load cart')
     
     this.cart = this.cartService.getCartProductByUser(user.userId);
+
+    console.log(this.cart, 'cart')
+
+    var products = this.productService.getProducts();
+
+    //var product = products.find(x => x.productId == this.cart[0].productId);
+
+   // console.log(product, 'prod')
   }
 
   public removeItem(productid: number) {
+    console.log('in remove cart')
     this.cartService.removeFromCart(productid);
     this.loadCart();
   }
@@ -63,10 +72,24 @@ export class CartComponent implements OnInit {
   }
 
   public buyNow() {
-    this.orderService.buyNow(this.currentUser.userId)
-    this.productService.updateStockAfterPurchase(this.cart);
-    alert('Order placed!');
-    this.clearCart();
+    // this.orderService.buyNow(this.currentUser.userId)
+    // this.productService.updateStockAfterPurchase(this.cart);
+    // alert('Order placed!');
+    // this.clearCart();
+    if (this.cart.length === 0) {
+      alert('Your cart is empty!');
+      return;
+    }
+    const orderSuccess=this.orderService.buyNow(this.currentUser.userId);
+    if(orderSuccess)
+    {
+      this.productService.updateStockAfterPurchase(this.cart)
+      alert('Order placed successfully!');
+      this.loadCart();
+    }
+    else{
+      alert('Failed to fetch the order')
+    }
   }
 
   public shopNow(){

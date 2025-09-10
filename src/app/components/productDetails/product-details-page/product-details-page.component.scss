@@ -1,0 +1,39 @@
+.productName {
+    text-align: center;
+}
+
+.imagesAll {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+
+    .images {
+        width: 440px;
+        height: 440px;
+    }
+}
+
+.details {
+    margin-left: 50px;
+}
+
+.reviews {
+    text-align: center;
+    background-color: antiquewhite;
+    margin-left: 200px;
+    margin-right: 200px;
+}
+
+.similarProducts {
+    h3 {
+        text-align: center;
+
+    }
+    .similar-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        button {
+            margin-left: 150px;
+        }
+    }
+}

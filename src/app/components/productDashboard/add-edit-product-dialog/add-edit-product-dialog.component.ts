@@ -52,7 +52,7 @@ export class AddEditProductDialogComponent implements OnInit {
       color: [this.data ? this.data.color : '', [Validators.required, this.noBlankspaceValidator]],
       width: [this.data ? this.data.width : '', Validators.required],
       height: [this.data ? this.data.height : '', Validators.required],
-      voltage:[this.data ? this.data.voltage:'',Validators.required] 
+      voltage:[this.data ? this.data.voltage:''] 
     })
   }
 

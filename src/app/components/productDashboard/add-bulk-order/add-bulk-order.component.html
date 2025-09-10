@@ -1,21 +1,26 @@
 <div>
+    <div class="product">
     <mat-dialog-content>
-    @for(p of data;track $index)
+    @for(p of data;track p.productId)
     {
-         <mat-checkbox [checked]="selectedProduct[p.productId]!==undefined" (change)="onCheckBoxChange(p.productId,$event)" >Select</mat-checkbox>
-        <p>{{p.productName}}</p>
-
+         <mat-checkbox [checked]="selectedProduct[p.productId]!==undefined" (change)="onCheckBoxChange(p.productId,$event)" >{{p.productName}}</mat-checkbox>
+        
+        <p>Product Cost: {{p.productCost}}</p>
         @if(selectedProduct[p.productId])
         {
           <div class="addDecrease">
          <button mat-icon-button aria-label="Add" (click)="decrease(p.productId)"><mat-icon>remove</mat-icon></button>
         <span>{{ selectedProduct[p.productId] }}</span>
         <button mat-icon-button aria-label="Subtract" (click)="increase(p.productId)"><mat-icon>add</mat-icon></button>
-        
-      </div>
+      </div><br>
         }
     }
-    </mat-dialog-content>
-    <button mat-raised-button color="primary" (click)="addSelectedToCart()" [disabled]="selectedCount===0">Add selected to cart</button>
-    <button mat-button (click)="dialogRef.close()">Cancel</button>
+  </mat-dialog-content>
+   
 </div>
+
+</div>
+<mat-dialog-actions style="margin-top: 100px;" align="end">
+  <button style="width: 100px;height: 30px;margin-right: 10px;" color='primary' mat-raised-button color="primary" (click)="addSelectedToCart()" [disabled]="selectedCount===0">Add to cart</button>
+    <button style="width: 100px;height: 30px;" mat-button (click)="dialogRef.close()">Cancel</button>
+</mat-dialog-actions>

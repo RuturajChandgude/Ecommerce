@@ -37,7 +37,6 @@ export class ProductsService {
 
   public updateStockAfterPurchase(cartItems: CartProducts[]) {
     const products = this.getProducts();
-
     cartItems.forEach((cartItem) => {
       const index = products.findIndex(
         (p) => p.productId === cartItem.productId
