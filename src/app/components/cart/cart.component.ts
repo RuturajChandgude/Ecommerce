@@ -16,7 +16,7 @@ import { CurrencyService } from '../../core/services/currency/currency.service';
   imports: [CommonModule,MatSnackBarModule,MatCardModule, MatIconModule, MatButtonModule],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
-  changeDetection:ChangeDetectionStrategy.OnPush
+ 
 })
 export class CartComponent implements OnInit {
   public snackBar = inject(MatSnackBar);
@@ -29,11 +29,27 @@ export class CartComponent implements OnInit {
   ngOnInit() {
     this.loadCart();
     this.currencyService.sharedCurrency$.subscribe(data=>{
-      this.newSelectedCurrency=data
+      console.log('data',data)
+      this.newSelectedCurrency=data;
     })
     console.log('in cart',this.newSelectedCurrency)
   }
- 
+  
+  public convertCurrency(price:number):string
+  {
+    switch(this.newSelectedCurrency)
+    {
+      case 'USA':
+        return `$ ${(price/88.44).toFixed(2)}`;
+      case 'France':
+        return `€ ${(price/103.66).toFixed(2)}`;
+      case 'England':
+        return `£ ${(price/119.72).toFixed(2)}`;
+      default:
+        return `Rs ${price}`
+    }
+  }
+
   public loadCart() {
     const user=JSON.parse(localStorage.getItem('currentUser') || '[]');
     this.cart = this.cartService.getCartProductByUser(user.userId);
@@ -61,15 +77,23 @@ export class CartComponent implements OnInit {
     this.loadCart();
   }
 
-  public totalAmount(): number {
-    return this.cartService.getTotalAmountCart();
+  public totalAmount(): string {
+    switch(this.newSelectedCurrency)
+    {
+      case 'USA':
+        return `$ ${(this.cartService.getTotalAmountCart()/88.44).toFixed(2)}`;
+      case 'France':
+        return `€ ${(this.cartService.getTotalAmountCart()/103.66).toFixed(2)}`;
+      case 'England':
+        return `£ ${(this.cartService.getTotalAmountCart()/119.72).toFixed(2)}`;
+      default:
+        return `Rs ${this.cartService.getTotalAmountCart()}`
+    }
+   
   }
 
   public buyNow() {
-    // this.orderService.buyNow(this.currentUser.userId)
-    // this.productService.updateStockAfterPurchase(this.cart);
-    // alert('Order placed!');
-    // this.clearCart();
+   
     if (this.cart.length === 0) {
       alert('Your cart is empty!');
       return;

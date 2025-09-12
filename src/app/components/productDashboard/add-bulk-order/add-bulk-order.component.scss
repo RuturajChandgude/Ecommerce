@@ -1,23 +1,11 @@
-.product{
-    h3{
-        margin-top: 15px;
-    }
-    p{
-        margin-left: 40px;
-    }
-    img{
-    width: 100px; height: 100px;margin-right: 20px;margin-left: 10px;
-}
-}
-
 .addDecrease {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-top: 10px;
-    margin-left: 40px;
-    
+    gap: 5px;
 }
 .buttons{
     display: flex;
+}
+th.mat-header-cell {
+  text-align: center !important;
 }

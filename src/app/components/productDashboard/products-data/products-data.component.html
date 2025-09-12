@@ -52,21 +52,8 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by productCost"> ProductCost
         </th>
         <td mat-cell *matCellDef="let element">
-            @if(newSelectedCurrency==='Dollar')
-            {
-                $ {{element.productCost/88.44 |  number : '1.2-2'}}
-            }
-            @else if(newSelectedCurrency==='Euro')
-            {
-                € {{element.productCost/103.66 |  number : '1.2-2'}}
-            }
-            @else if(newSelectedCurrency==='British Pound')
-            {
-                £ {{element.productCost/119.72 |  number : '1.2-2'}}
-            }
-            @else{
-                Rs {{element.productCost}}
-            } </td>
+        {{convertCurrency(element.productCost)}}   
+        </td>
     </ng-container>
 
      <ng-container matColumnDef="productQuantity">

@@ -60,6 +60,21 @@ export class ProductDetailsPageComponent implements OnInit {
 
   }
 
+  public convertCurrency(price:number):string
+  {
+    switch(this.newSelectedCurrency)
+    {
+      case 'USA':
+        return `$ ${(price/88.44).toFixed(2)}`;
+      case 'France':
+        return `€ ${(price/103.66).toFixed(2)}`;
+      case 'England':
+        return `£ ${(price/119.72).toFixed(2)}`;
+      default:
+        return `Rs ${price}`
+    }
+  }
+
   public increase() {
     if (this.productData.productQuantity === 0) {
       alert('Sorry! Product is out of stock');
@@ -80,8 +95,18 @@ export class ProductDetailsPageComponent implements OnInit {
     }
   }
 
-  public total(): number {
-    return this.qty * this.productData.productCost;
+  public total(): string {
+    switch(this.newSelectedCurrency)
+    {
+      case 'USA':
+        return `$ ${(this.qty * this.productData.productCost/88.44).toFixed(2)}`;
+      case 'France':
+        return `€ ${(this.qty * this.productData.productCost/103.66).toFixed(2)}`;
+      case 'England':
+        return `£ ${(this.qty * this.productData.productCost/119.72).toFixed(2)}`;
+      default:
+        return `Rs ${this.qty * this.productData.productCost}`
+    }
   }
 
   public addToCart() {

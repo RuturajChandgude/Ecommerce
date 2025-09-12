@@ -61,7 +61,6 @@ export class ProductsDataComponent implements OnInit, AfterViewInit {
     
     this.currencyService.sharedCurrency$.subscribe(data=>{
       this.newSelectedCurrency=data
-     
     })
   }
 
@@ -70,16 +69,30 @@ export class ProductsDataComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
- 
+  public convertCurrency(price:number):string
+  {
+    switch(this.newSelectedCurrency)
+    {
+      case 'USA':
+        return `$ ${(price/88.44).toFixed(2)}`;
+      case 'France':
+        return `€ ${(price/103.66).toFixed(2)}`;
+      case 'England':
+        return `£ ${(price/119.72).toFixed(2)}`;
+      default:
+        return `Rs ${price}`
+    }
+  }
 
   public openAddBulk(){
     const productData=this.productService.getProducts();
     const dialogRef=this.dialog.open(AddBulkOrderComponent,{
-      width:'600px',
+      width:'800px',
       height:'500px',
       data:productData
     })
   }
+  
   public loadProducts() {
     const productData = this.productService.getProducts();
     if (productData) {

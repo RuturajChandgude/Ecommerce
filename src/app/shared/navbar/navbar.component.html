@@ -4,11 +4,11 @@
  
  
   <mat-form-field class="category">
-  <mat-label>Select Currency</mat-label>
+  <mat-label>Select currency by country</mat-label>
   <mat-select (selectionChange)="convertCurrency()" [(value)]="selectedCurrency">
       @for(c of countryCurrencyMap;track c )
       {
-        <mat-option [value]="c.currency">{{c.currency}}</mat-option> 
+        <mat-option [value]="c.country">{{c.country}}</mat-option> 
       }
     
   </mat-select>

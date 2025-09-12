@@ -11,21 +11,7 @@
   <div class="details">
     <p><strong>Category:</strong> {{ productData.productCategory.productCategory }}</p>
     <p><strong>Price:</strong>
-      @if(newSelectedCurrency==='Dollar')
-            {
-                $ {{productData.productCost/88.44 |  number : '1.2-2'}}
-            }
-            @else if(newSelectedCurrency==='Euro')
-            {
-                € {{productData.productCost/103.66 |  number : '1.2-2'}}
-            }
-            @else if(newSelectedCurrency==='British Pound')
-            {
-                £ {{productData.productCost/119.72 |  number : '1.2-2'}}
-            }
-            @else{
-                Rs {{productData.productCost}}
-            }
+     {{convertCurrency(productData.productCost)}}
     </p>
     <p><strong>Weight:</strong> {{ productData.weight }} kg</p>
     <p><strong>Color:</strong> {{ productData.color }}</p>
@@ -45,21 +31,7 @@
     </div>
 
     <p class="totalAmount">
-      @if(newSelectedCurrency==='Dollar')
-            {
-              Total:  $ {{total()/88.44 |  number : '1.2-2'}}
-            }
-            @else if(newSelectedCurrency==='Euro')
-            {
-              Total:  € {{total()/103.66 |  number : '1.2-2'}}
-            }
-            @else if(newSelectedCurrency==='British Pound')
-            {
-              Total:  £ {{total()/119.72 |  number : '1.2-2'}}
-            }
-            @else{
-              Total:  Rs {{total()}}
-            }
+      {{total()}}
       </p>
     <button mat-raised-button color="primary" (click)="addToCart()">Add to Cart</button>
   </div>

@@ -14,21 +14,17 @@ import { CurrencyService } from '../../core/services/currency/currency.service';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent  {
   public selectedCurrency:string=''
   public countryCurrencyMap:CountryCurrency[]=[
-    {currency:'Rupees',currencyPrice:88.44},//rs
-    {currency:'Dollar',currencyPrice:1},//dollar
-    {currency:'Euro',currencyPrice:0.86},//euro
-    {currency:'British Pound',currencyPrice:0.74} //pound
+    {country:'India',currencyPrice:88.44},
+    {country:'USA',currencyPrice:1},
+    {country:'France',currencyPrice:0.86},
+    {country:'England',currencyPrice:0.74}
   ]
 
   constructor(private router: Router,public cartService:CartService,private currencyService:CurrencyService) {}
 
-  ngOnInit() {
-    localStorage.setItem('currency',JSON.stringify(this.countryCurrencyMap))
-  }
-  
   public isLoggedIn(): boolean {
     if (localStorage.getItem('currentUser')) {
       return true

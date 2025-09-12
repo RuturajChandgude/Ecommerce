@@ -19,24 +19,12 @@
       }
       <mat-card-content>
         <p><strong>Price:</strong>
-          
-        @if(newSelectedCurrency==='Dollar')
-            {
-                $ {{item.productCost/88.44 |  number : '1.2-2'}}
-            }
-            @else if(newSelectedCurrency==='Euro')
-            {
-                € {{item.productCost/103.66 |  number : '1.2-2'}}
-            }
-            @else if(newSelectedCurrency==='British Pound')
-            {
-                £ {{item.productCost/119.72 |  number : '1.2-2'}}
-            }
-            @else{
-                Rs {{item.productCost}}
-            }</p>
+          {{convertCurrency(item.productCost)}}
+       </p>
         <p><strong>Quantity:</strong> {{ item.quantity }}</p>
-        <p><strong>Total:</strong> Rs{{ item.total }}</p>
+        <p><strong>Total:</strong>
+         {{convertCurrency(item.total)}}
+          </p>
       </mat-card-content>
       
       <p class="edittext"><strong>Edit Quantity:</strong></p>
@@ -61,7 +49,7 @@
       <h4>Order Summary</h4>
     @for(item of cart;track $index)
     {
-      <p class="productsummary">{{item.productName}} : Rs {{item.productCost}} X {{item.quantity}} =  Rs {{item.total}}</p>
+      <p class="productsummary">{{item.productName}} :  {{convertCurrency(item.total)}} X {{item.quantity}} =   {{convertCurrency(item.total)}}</p>
     }
     <h3>Grand Total: Rs {{totalAmount()}}</h3>
     <button mat-raised-button color="primary" (click)="buyNow()">Buy Now</button>

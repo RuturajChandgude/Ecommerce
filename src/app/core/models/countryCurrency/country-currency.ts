@@ -1,4 +1,4 @@
 export interface CountryCurrency {
-    currency:string,
+    country:string,
     currencyPrice:number
 }

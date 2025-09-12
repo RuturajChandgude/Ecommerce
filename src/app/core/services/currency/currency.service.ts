@@ -4,12 +4,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CurrencyService {
-  private sharedCurrencySubject=new BehaviorSubject<string>('Rupees');
+  private sharedCurrencySubject=new BehaviorSubject<string>('India');
   sharedCurrency$:Observable<string>=this.sharedCurrencySubject.asObservable();
   
   constructor() { }
 
-  updateCurrency(newCurrency:string)
+  public updateCurrency(newCurrency:string)
   {
     this.sharedCurrencySubject.next(newCurrency)
   }
