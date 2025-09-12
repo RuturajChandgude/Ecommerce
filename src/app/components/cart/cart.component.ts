@@ -8,41 +8,35 @@ import { CartProducts } from '../../core/models/cart/cart-products';
 import { MatIconModule } from '@angular/material/icon';
 import { OrdersService } from '../../core/services/orders/orders.service';
 import { Router } from '@angular/router';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { CurrencyService } from '../../core/services/currency/currency.service';
 @Component({
   selector: 'app-cart',
-  imports: [CommonModule, MatCardModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule,MatSnackBarModule,MatCardModule, MatIconModule, MatButtonModule],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
   changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class CartComponent implements OnInit {
-  cart: CartProducts[] = [];
+  public snackBar = inject(MatSnackBar);
+  public cart: CartProducts[] = [];
+  public newSelectedCurrency:string=''
   public currentUser= JSON.parse(localStorage.getItem('currentUser') || '[]')
-   cdr=inject(ChangeDetectorRef)
-  constructor(private router:Router,private cartService: CartService, private productService: ProductsService,private orderService:OrdersService) { }
+  constructor(private router:Router,private currencyService:CurrencyService,
+  private cartService: CartService, private productService: ProductsService,private orderService:OrdersService) { }
+
   ngOnInit() {
-    // setTimeout(() => {
-    //   this.cdr.detectChanges()
-    // },100);
     this.loadCart();
-     //this.loadCart();
+    this.currencyService.sharedCurrency$.subscribe(data=>{
+      this.newSelectedCurrency=data
+    })
+    console.log('in cart',this.newSelectedCurrency)
   }
  
-
   public loadCart() {
-    console.log('in load cart')
     const user=JSON.parse(localStorage.getItem('currentUser') || '[]');
-    
     this.cart = this.cartService.getCartProductByUser(user.userId);
-
-    console.log(this.cart, 'cart')
-
-    var products = this.productService.getProducts();
-
-    //var product = products.find(x => x.productId == this.cart[0].productId);
-
-   // console.log(product, 'prod')
   }
 
   public removeItem(productid: number) {
@@ -84,7 +78,10 @@ export class CartComponent implements OnInit {
     if(orderSuccess)
     {
       this.productService.updateStockAfterPurchase(this.cart)
-      alert('Order placed successfully!');
+      // alert('Order placed succesfully')
+      this.snackBar.open('Order placed succesfully','Dismiss',{
+        duration:3000
+      })
       this.loadCart();
     }
     else{

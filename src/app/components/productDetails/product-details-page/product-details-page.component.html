@@ -1,7 +1,8 @@
 <div class="product-details-container">
   <h2 class="productName">{{ productData.productName }}</h2>
-
-  <div class="imagesAll">
+  <div class="imgsAndDetails">
+    
+  <div class="imagesAllScroll">
     @for (img of productData.productImgUrl; track img) {
       <img class="images" [src]="img" />
     }
@@ -9,7 +10,23 @@
 
   <div class="details">
     <p><strong>Category:</strong> {{ productData.productCategory.productCategory }}</p>
-    <p><strong>Price:</strong> Rs {{ productData.productCost }}</p>
+    <p><strong>Price:</strong>
+      @if(newSelectedCurrency==='Dollar')
+            {
+                $ {{productData.productCost/88.44 |  number : '1.2-2'}}
+            }
+            @else if(newSelectedCurrency==='Euro')
+            {
+                € {{productData.productCost/103.66 |  number : '1.2-2'}}
+            }
+            @else if(newSelectedCurrency==='British Pound')
+            {
+                £ {{productData.productCost/119.72 |  number : '1.2-2'}}
+            }
+            @else{
+                Rs {{productData.productCost}}
+            }
+    </p>
     <p><strong>Weight:</strong> {{ productData.weight }} kg</p>
     <p><strong>Color:</strong> {{ productData.color }}</p>
     <p><strong>Dimensions:</strong> {{ productData.width }} cm x {{ productData.height }} cm</p>
@@ -20,19 +37,38 @@
     @if (productData.productQuantity == 0) {
       <p style="color: red"><strong>Product is out of stock</strong></p>
     }
-
+    <p><strong>Add Quatity:</strong></p>
     <div class="addDecrease">
       <button mat-icon-button (click)="decrease()"><mat-icon>remove</mat-icon></button>
       <span>{{ qty }}</span>
       <button mat-icon-button (click)="increase()"><mat-icon>add</mat-icon></button>
     </div>
 
-    <p class="totalAmount">Total: Rs {{ total() }}</p>
+    <p class="totalAmount">
+      @if(newSelectedCurrency==='Dollar')
+            {
+              Total:  $ {{total()/88.44 |  number : '1.2-2'}}
+            }
+            @else if(newSelectedCurrency==='Euro')
+            {
+              Total:  € {{total()/103.66 |  number : '1.2-2'}}
+            }
+            @else if(newSelectedCurrency==='British Pound')
+            {
+              Total:  £ {{total()/119.72 |  number : '1.2-2'}}
+            }
+            @else{
+              Total:  Rs {{total()}}
+            }
+      </p>
     <button mat-raised-button color="primary" (click)="addToCart()">Add to Cart</button>
   </div>
+  </div>
 
+ <br>
   <div class="reviews">
-  <h3 >Customer Reviews</h3>
+  <h2 >Customer Reviews</h2>
+  <h3>What our customers say</h3>
   @if (reviewData.length > 0) {
     @for (review of reviewData; track review.reviewId) {
       <h4>User: {{ review.userName }}</h4>
@@ -49,21 +85,22 @@
   }
   </div>
   <div class="similarProducts">
-  <h3>Similar Products</h3>
+  <h2>Similar Products</h2>
   @if (similarProducts.length > 0) {
     <div class="similar-grid">
       @for (product of similarProducts; track product.productId) {
         <mat-card class="similar-product-card">
-          <img width="400px" height="200px" mat-card-image [src]="product.productImgUrl[0]" />
+          <img  mat-card-image [src]="product.productImgUrl[0]" />
           <mat-card-content>
-            <p style="text-align: center;">{{ product.productName }}</p>
+            <p>{{ product.productName }}</p>
           </mat-card-content>
           <mat-card-actions >
-            <button mat-button (click)="getSimilarProduct(product)">View Details</button>
+            <button mat-raised-button color="primary" (click)="getSimilarProduct(product)">View Details</button>
           </mat-card-actions>
         </mat-card>
       }
     </div>
   }
   </div>
+
 </div>

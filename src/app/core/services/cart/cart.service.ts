@@ -89,6 +89,7 @@ export class CartService {
     allCarts = allCarts.filter((c) => String(c.userId) !== String(userId));
     allCarts.push(...userCart);
     this.saveAllCarts(allCarts);
+     alert('Product added to cart!');
   }
 
   public updateQuantity(userId: string, productId: number, newQty: number) {

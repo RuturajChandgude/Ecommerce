@@ -18,7 +18,23 @@
         <img mat-card-image [src]="item.productImgUrl[0]"/>
       }
       <mat-card-content>
-        <p><strong>Price:</strong> Rs{{ item.productCost }}</p>
+        <p><strong>Price:</strong>
+          
+        @if(newSelectedCurrency==='Dollar')
+            {
+                $ {{item.productCost/88.44 |  number : '1.2-2'}}
+            }
+            @else if(newSelectedCurrency==='Euro')
+            {
+                € {{item.productCost/103.66 |  number : '1.2-2'}}
+            }
+            @else if(newSelectedCurrency==='British Pound')
+            {
+                £ {{item.productCost/119.72 |  number : '1.2-2'}}
+            }
+            @else{
+                Rs {{item.productCost}}
+            }</p>
         <p><strong>Quantity:</strong> {{ item.quantity }}</p>
         <p><strong>Total:</strong> Rs{{ item.total }}</p>
       </mat-card-content>
@@ -26,7 +42,6 @@
       <p class="edittext"><strong>Edit Quantity:</strong></p>
 
       <div class="editQty">
- 
         <button mat-icon-button  (click)="decreaseQty(item)"><mat-icon>remove</mat-icon></button>
         <span>{{item.quantity}}</span>
         <button mat-icon-button  (click)="increaseQty(item)" ><mat-icon>add</mat-icon></button>

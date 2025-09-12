@@ -1,6 +1,20 @@
 <mat-toolbar class="nav">
 
-  <span class="title">E-commerce Application</span>
+  <span class="title">Shop X</span>
+ 
+ 
+  <mat-form-field class="category">
+  <mat-label>Select Currency</mat-label>
+  <mat-select (selectionChange)="convertCurrency()" [(value)]="selectedCurrency">
+      @for(c of countryCurrencyMap;track c )
+      {
+        <mat-option [value]="c.currency">{{c.currency}}</mat-option> 
+      }
+    
+  </mat-select>
+</mat-form-field>
+
+
   <div class="nav-links">
     <button mat-button routerLink="" >
       Product Details

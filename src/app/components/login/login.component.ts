@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
     })
   }
 
+
   public login() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value

@@ -8,9 +8,8 @@
     width: 100%;
     max-width: 250px;
     padding: 50px;
-    background-color:rgb(144, 175, 199);
-    align-items: center;
-   
+    background-color:rgb(88, 165, 224);
+    align-items: center; 
 }
 .container button{
     width: 90%;
@@ -23,4 +22,7 @@ mat-form-field{
 }
 button{
     margin-left: 15px;
+}
+h2{
+    text-align: center;
 }

@@ -3,12 +3,20 @@
     <mat-dialog-content>
     @for(p of data;track p.productId)
     {
-         <mat-checkbox [checked]="selectedProduct[p.productId]!==undefined" (change)="onCheckBoxChange(p.productId,$event)" >{{p.productName}}</mat-checkbox>
-        
-        <p>Product Cost: {{p.productCost}}</p>
-        @if(selectedProduct[p.productId])
+         <mat-checkbox [checked]="selectedProduct[p.productId]!==undefined" (change)="onCheckBoxChange(p.productId,$event)" ><h3>{{p.productName}}</h3></mat-checkbox>
+        <p>Product Cost: Rs {{p.productCost}}</p>
+        @for(img of p.productImgUrl;track img)
         {
-          <div class="addDecrease">
+          <img [src]="img">
+        }
+        <br>
+        @if(selectedProduct[p.productId] && p.productQuantity===0)
+        {
+          <p style="color: red;">Product is out of stock</p>
+        }
+        @if(selectedProduct[p.productId] && p.productQuantity>0)
+        {
+        <div class="addDecrease">
          <button mat-icon-button aria-label="Add" (click)="decrease(p.productId)"><mat-icon>remove</mat-icon></button>
         <span>{{ selectedProduct[p.productId] }}</span>
         <button mat-icon-button aria-label="Subtract" (click)="increase(p.productId)"><mat-icon>add</mat-icon></button>
@@ -16,11 +24,11 @@
         }
     }
   </mat-dialog-content>
-   
+  
 </div>
 
 </div>
 <mat-dialog-actions style="margin-top: 100px;" align="end">
-  <button style="width: 100px;height: 30px;margin-right: 10px;" color='primary' mat-raised-button color="primary" (click)="addSelectedToCart()" [disabled]="selectedCount===0">Add to cart</button>
-    <button style="width: 100px;height: 30px;" mat-button (click)="dialogRef.close()">Cancel</button>
+  <button style="margin-right: 10px;"  mat-raised-button color="primary" (click)="addSelectedToCart()" [disabled]="selectedCount===0">Add to cart</button>
+    <button  mat-button color="warn" (click)="dialogRef.close()">Cancel</button>
 </mat-dialog-actions>

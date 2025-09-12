@@ -63,14 +63,12 @@
 
 .cart-summary {
     text-align: center;
-    margin-top: 30px;
-    
+    margin-top: 30px; 
     h3 {
         font-size: 22px;
         font-weight: bold;
         margin-bottom: 15px;
     }
-
     button {
         margin-left: 10px;
     }
@@ -80,10 +78,11 @@
 }
 .editQty{
     display: flex;
-    align-items: center;
-    gap: 8px;
+   align-items: center;
+    gap: 12px;
     margin-top: 2px;  
     margin-left: 10px;
+   
 }
 .edittext{
     margin-left: 18px;

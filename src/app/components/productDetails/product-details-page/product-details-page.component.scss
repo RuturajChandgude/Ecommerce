@@ -2,14 +2,16 @@
     text-align: center;
 }
 
-.imagesAll {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+.imagesAllScroll {
+    max-width: 700px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
 
-
-    .images {
-        width: 440px;
-        height: 440px;
+    img {
+        display: inline-block;
+        width: 400px;
+        height: 400px;
     }
 }
 
@@ -18,22 +20,81 @@
 }
 
 .reviews {
-    text-align: center;
+    h2 {
+        text-align: center;
+    }
+
+    h3{
+        text-align: center;
+        font-size: large;
+    }
+
+    text-align: start;
+    padding-left: 50px;
     background-color: antiquewhite;
     margin-left: 200px;
     margin-right: 200px;
+
+    .reviewRatingDelete {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        mat-icon{
+            margin-right: 20px;
+        }
+    }
 }
 
 .similarProducts {
-    h3 {
+    h2 {
+        margin-top: 20px;
         text-align: center;
-
     }
+
     .similar-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
+
         button {
-            margin-left: 150px;
+            margin-left: 130px;
         }
     }
+    .similar-product-card {
+        margin-left: 20px;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+        img{
+           width: 400px;
+           height: 400px;
+        }
+        p{
+            text-align: center;
+            font-size: larger;
+        }
+        
+    }
+    .similar-product-card:hover{
+         transform: scale(1.05);
+         box-shadow: rgba(64, 64, 200, 0.25) 0px 13px 27px -5px, rgba(164, 134, 217, 0.3) 0px 8px 16px -8px;
+    }
+
+}
+.imgsAndDetails{
+    display: flex;
+    align-items: center;
+}
+.addDecrease{
+     display: flex;
+   align-items: center;
+    gap: 12px;
+    margin-top: 2px;  
+    margin-left: 10px;
+    span{
+        margin-bottom: 2px;
+    }
+}
+.totalAmount{
+    font-weight: bold;
+    font-size: medium;
+    margin-top: 5px;
 }

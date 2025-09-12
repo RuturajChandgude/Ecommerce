@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { FormsModule } from '@angular/forms';
 import { AddBulkOrderComponent } from '../add-bulk-order/add-bulk-order.component';
+import { CurrencyService } from '../../../core/services/currency/currency.service';
 
 @Component({
   selector: 'app-products-data',
@@ -32,6 +33,8 @@ export class ProductsDataComponent implements OnInit, AfterViewInit {
   public productCategories = JSON.parse(localStorage.getItem('productCategories') || '[]')
   public selectedCategory: string = '';
   public selectedFilter:string='';
+  public newSelectedCurrency:string='';
+
   public categories: ProductCategory[] = [
     { productCategoryId: 1, productCategory: 'Electronics' },
     { productCategoryId: 2, productCategory: 'Groceries' },
@@ -43,7 +46,7 @@ export class ProductsDataComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private productService: ProductsService, private dialog: MatDialog) { }
+  constructor(private currencyService:CurrencyService,private productService: ProductsService, private dialog: MatDialog) { }
   ngOnInit() {
     this.loadProducts();
     this.categories.sort((a,b)=> a.productCategory.localeCompare(b.productCategory))
@@ -56,6 +59,10 @@ export class ProductsDataComponent implements OnInit, AfterViewInit {
        || data.width===filterNumber || data.height===filterNumber
     }
     
+    this.currencyService.sharedCurrency$.subscribe(data=>{
+      this.newSelectedCurrency=data
+     
+    })
   }
 
   ngAfterViewInit() {
@@ -63,15 +70,15 @@ export class ProductsDataComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
+ 
+
   public openAddBulk(){
     const productData=this.productService.getProducts();
     const dialogRef=this.dialog.open(AddBulkOrderComponent,{
       width:'600px',
       height:'500px',
-    
       data:productData
     })
-    console.log(productData)
   }
   public loadProducts() {
     const productData = this.productService.getProducts();
